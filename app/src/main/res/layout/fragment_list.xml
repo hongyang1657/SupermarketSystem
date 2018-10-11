@@ -5,6 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:background="@null"
+            android:padding="8dp"
+            android:textSize="14sp"
+            android:textColor="@color/colorBlack"
+            android:gravity="center_vertical"
+            android:id="@+id/et_search_goods"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_search_list"
         android:layout_width="match_parent"
