@@ -35,7 +35,6 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         myViewHolder.tvName.setText(goodsList.get(i).getName());
         myViewHolder.tvPrice.setText(goodsList.get(i).getPrice());
-
     }
 
     @Override
