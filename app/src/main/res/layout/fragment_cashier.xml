@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="@color/colorWhite"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorCutOffLine2"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,10 +9,70 @@
         android:text="扫描"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/tv_bar_code"
-        android:padding="8dp"
-        android:gravity="center"
+
+    <RelativeLayout
+        android:id="@+id/rl_total"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:background="@color/colorWhite"
+        android:foreground="@drawable/frame_no_corner"
+        android:layout_height="60dp">
+        <CheckBox
+            android:id="@+id/cb_total"
+            android:text="  全选"
+            android:textSize="14sp"
+            android:textColor="@color/colorBlack"
+            android:button="@null"
+            android:drawableLeft="@drawable/checkbox_selecter"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/bt_settle_accounts"
+            android:text="去结算"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:background="@color/colorTuomanRed"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tv_total"
+            android:layout_toLeftOf="@id/bt_settle_accounts"
+            android:lines="1"
+            android:text="¥0.00"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/colorTuomanRed"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/tv_total_1"
+            android:layout_toLeftOf="@id/tv_total"
+            android:lines="1"
+            android:text="合计:"
+            android:paddingLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_cashier_list"
+        android:layout_below="@id/bt_scan"
+        android:layout_above="@id/rl_total"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
+</RelativeLayout>

@@ -14,22 +14,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.hongy.supermarketsystem.R;
+import com.hongy.supermarketsystem.api.ApiManager;
 import com.hongy.supermarketsystem.bean.Goods;
+import com.hongy.supermarketsystem.bean.GoodsInfoFromInternet;
 import com.hongy.supermarketsystem.utils.Constant;
 import com.hongy.supermarketsystem.utils.DataBaseUtil;
+import com.hongy.supermarketsystem.utils.L;
 import com.hongy.supermarketsystem.zxing.activity.CaptureActivity;
+
+import java.util.Random;
+
+import rx.Subscriber;
+import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 
 public class EnteringFragment extends Fragment {
 
+    private String appcode = "APPCODE 5353076bdf71427c8c8aa5ab97eec66c";
     private Button btScan,btAddGoods;
     private EditText etBarCode,etGoodsName,etGoodsPrice;
+    private Switch aSwitch;
+    private boolean isUseOnlineGoodsSearch = false;
 
     @Nullable
     @Override
@@ -45,6 +59,7 @@ public class EnteringFragment extends Fragment {
         etBarCode = view.findViewById(R.id.et_bar_code);
         etGoodsName = view.findViewById(R.id.et_goods_name);
         etGoodsPrice = view.findViewById(R.id.et_goods_price);
+        aSwitch = view.findViewById(R.id.sw);
         btScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,6 +70,18 @@ public class EnteringFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 addGoodsToDB();
+            }
+        });
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    Toast.makeText(getActivity(), "使用在线数据", Toast.LENGTH_SHORT).show();
+                    isUseOnlineGoodsSearch = true;
+                }else {
+                    Toast.makeText(getActivity(), "关闭在线数据", Toast.LENGTH_SHORT).show();
+                    isUseOnlineGoodsSearch  = false;
+                }
             }
         });
     }
@@ -79,7 +106,8 @@ public class EnteringFragment extends Fragment {
         if ("".equals(goodsName)||"".equals(goodsPrice)||"".equals(goodsBarcode)){
             Toast.makeText(getActivity(), "商品信息不能为空", Toast.LENGTH_SHORT).show();
         }else {
-            DataBaseUtil.insertData(new Goods(goodsName,goodsPrice,goodsBarcode));
+            Goods goods = new Goods(goodsName,goodsPrice,goodsBarcode,Constant.goodsIconList[new Random().nextInt(22)],true);
+            DataBaseUtil.insertData(goods);
             etGoodsName.setText("");
             etGoodsPrice.setText("");
             etBarCode.setText("");
@@ -96,6 +124,31 @@ public class EnteringFragment extends Fragment {
             String scanResult = bundle.getString(Constant.INTENT_EXTRA_KEY_QR_SCAN);
             //将扫描出的信息显示出来
             etBarCode.setText(scanResult);
+            //如果开启在线商品信息查询
+            if (isUseOnlineGoodsSearch){
+                ApiManager.serviceBarcode
+                        .getGoodsDetails(appcode,scanResult)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.newThread())
+                        .subscribe(new Subscriber<GoodsInfoFromInternet>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                L.i("e:"+e.toString());
+                            }
+
+                            @Override
+                            public void onNext(GoodsInfoFromInternet goodsInfoFromInternet) {
+                                L.i("goodsInfoFromInternet:"+new Gson().toJson(goodsInfoFromInternet));
+                                etGoodsName.setText(goodsInfoFromInternet.getShowapi_res_body().getGoodsName());
+                                etGoodsPrice.setText(goodsInfoFromInternet.getShowapi_res_body().getPrice());
+                            }
+                        });
+            }
         }
     }
 

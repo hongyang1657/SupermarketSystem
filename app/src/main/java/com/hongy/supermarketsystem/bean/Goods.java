@@ -3,21 +3,27 @@ package com.hongy.supermarketsystem.bean;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Transient;
 import org.greenrobot.greendao.annotation.Unique;
 
 @Entity
 public class Goods {
 
-    @Unique    //该属性值必须在数据库中是唯一值
     private String name;
     private String price;
-    @Unique
+    @Unique   //该属性值必须在数据库中是唯一值
     private String barCode;
-    @Generated(hash = 997633103)
-    public Goods(String name, String price, String barCode) {
+    //@Transient    //使用该注释的属性不会被存入数据库的字段中
+    private int imgResId;
+    private boolean isChecked;
+    @Generated(hash = 1555374506)
+    public Goods(String name, String price, String barCode, int imgResId,
+            boolean isChecked) {
         this.name = name;
         this.price = price;
         this.barCode = barCode;
+        this.imgResId = imgResId;
+        this.isChecked = isChecked;
     }
     @Generated(hash = 1770709345)
     public Goods() {
@@ -39,6 +45,18 @@ public class Goods {
     }
     public void setBarCode(String barCode) {
         this.barCode = barCode;
+    }
+    public int getImgResId() {
+        return this.imgResId;
+    }
+    public void setImgResId(int imgResId) {
+        this.imgResId = imgResId;
+    }
+    public boolean getIsChecked() {
+        return this.isChecked;
+    }
+    public void setIsChecked(boolean isChecked) {
+        this.isChecked = isChecked;
     }
 
     @Override

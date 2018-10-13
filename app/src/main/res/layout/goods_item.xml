@@ -3,23 +3,29 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="@color/colorWhite"
-    android:layout_height="80dp">
+    android:layout_marginTop="4dp"
+    android:layout_height="90dp">
 
-    <RadioButton
-        android:id="@+id/rb_select_goods"
+    <CheckBox
+        android:id="@+id/cb_select_goods"
         android:button="@null"
-        android:drawableLeft="@drawable/entering_selecter"
+        android:drawableLeft="@drawable/checkbox_selecter"
+        android:paddingLeft="14dp"
+        android:paddingRight="8dp"
         android:layout_width="wrap_content"
         android:gravity="center"
         android:layout_height="match_parent" />
 
     <ImageView
         android:id="@+id/iv_goods"
-        android:padding="8dp"
-        android:layout_toRightOf="@id/rb_select_goods"
-        android:src="@mipmap/ic_launcher"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="6dp"
+        android:padding="4dp"
+        android:layout_toRightOf="@id/cb_select_goods"
+        android:src="@mipmap/goods_icon"
         android:scaleType="centerCrop"
-        android:layout_width="wrap_content"
+        android:layout_width="76dp"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -27,17 +33,67 @@
         android:text="闪电发货的方式"
         android:textSize="14sp"
         android:textColor="@color/colorBlack"
-        android:padding="4dp"
+        android:padding="10dp"
         android:layout_toRightOf="@id/iv_goods"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/tv_goods_price"
-        android:text="100"
-        android:padding="4dp"
+        android:text="¥100"
+        android:textColor="@color/colorTuomanRed"
+        android:padding="10dp"
         android:layout_toRightOf="@id/iv_goods"
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/ll_seting_goods_num"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:foreground="@drawable/frame_goods_num"
+        android:orientation="horizontal"
+        android:layout_margin="12dp"
+        android:weightSum="3"
+        android:layout_width="99dp"
+        android:layout_height="28dp">
+
+        <ImageButton
+            android:id="@+id/ib_reduce"
+            android:src="@mipmap/reduce"
+            android:background="@null"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:layout_width="1px"
+            android:background="@color/colorRbNotSelected"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/tv_goods_num"
+            android:text="1"
+            android:inputType="number"
+            android:maxEms="2"
+            android:lines="1"
+            android:textSize="12sp"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:layout_width="1px"
+            android:background="@color/colorRbNotSelected"
+            android:layout_height="match_parent" />
+        <ImageButton
+            android:id="@+id/ib_plus"
+            android:src="@mipmap/plus"
+            android:background="@null"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 </RelativeLayout>
