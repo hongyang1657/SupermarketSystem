@@ -26,19 +26,23 @@ import com.hongy.supermarketsystem.bean.Goods;
 import com.hongy.supermarketsystem.fragment.adapter.GoodsAdapter;
 import com.hongy.supermarketsystem.utils.Constant;
 import com.hongy.supermarketsystem.utils.DataBaseUtil;
+import com.hongy.supermarketsystem.utils.L;
 import com.hongy.supermarketsystem.zxing.activity.CaptureActivity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
 
-public class CashierFragment extends Fragment {
+public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelect{
 
     private Button btScan;
     private RecyclerView recyclerView;
     private CheckBox cbTotal;
     private Button btTotal;
+    private TextView tvTotalPrice;
     private GoodsAdapter adapter;
     private List<Goods> goodsList = new ArrayList<>();
 
@@ -56,7 +60,8 @@ public class CashierFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view_cashier_list);
         cbTotal = view.findViewById(R.id.cb_total);
         btTotal = view.findViewById(R.id.bt_settle_accounts);
-        adapter = new GoodsAdapter(goodsList);
+        tvTotalPrice = view.findViewById(R.id.tv_total);
+        adapter = new GoodsAdapter(goodsList,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
         btScan.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +124,39 @@ public class CashierFragment extends Fragment {
     }
 
     private void searchGoods(String scanResult){
-        goodsList.addAll(DataBaseUtil.queryByBarcode(scanResult));
+        boolean isRepetition = false;
+        //判断如果清单中已经有该商品，则不添加新的item，而是在该商品数量上加一
+        List<Goods> scanResultList = DataBaseUtil.queryByBarcode(scanResult);
+        if (goodsList.size()==0){
+            isRepetition = false;
+        }
+
+        for (int i=0;i<goodsList.size();i++){
+            if (goodsList.get(i).getBarCode().equals(scanResultList.get(0).getBarCode())){          //列表中已经有该商品
+                goodsList.get(i).setNumble(goodsList.get(i).getNumble()+1);
+                L.i("121211111111111212"+scanResultList.get(0).toString());
+                isRepetition = true;
+            }
+        }
+
+        if (!isRepetition){
+            goodsList.add(scanResultList.get(0));
+        }
+
         adapter.notifyData(goodsList);
+    }
+
+    /**
+     * 购物车里商品信息改变
+     * @param position  item位置
+     * @param isCheck   是否选中
+     * @param price     价格
+     * @param num   数量
+     */
+    @Override
+    public void onItemChecked(int position,boolean isCheck,String price,int num) {
+        L.i("position:"+position+" ischeck:"+isCheck+" price:"+price+"  num:"+num);
+        Set<Integer> set = new HashSet<>();
+
     }
 }

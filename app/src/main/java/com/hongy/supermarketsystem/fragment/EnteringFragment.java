@@ -41,7 +41,7 @@ public class EnteringFragment extends Fragment {
 
     private String appcode = "APPCODE 5353076bdf71427c8c8aa5ab97eec66c";
     private Button btScan,btAddGoods;
-    private EditText etBarCode,etGoodsName,etGoodsPrice;
+    private EditText etBarCode,etGoodsName,etGoodsPrice,etGoodsNum;
     private Switch aSwitch;
     private boolean isUseOnlineGoodsSearch = false;
 
@@ -59,6 +59,7 @@ public class EnteringFragment extends Fragment {
         etBarCode = view.findViewById(R.id.et_bar_code);
         etGoodsName = view.findViewById(R.id.et_goods_name);
         etGoodsPrice = view.findViewById(R.id.et_goods_price);
+        etGoodsNum = view.findViewById(R.id.et_goods_num);
         aSwitch = view.findViewById(R.id.sw);
         btScan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,10 +104,11 @@ public class EnteringFragment extends Fragment {
         String goodsName = etGoodsName.getText().toString().trim();
         String goodsPrice = etGoodsPrice.getText().toString().trim();
         String goodsBarcode = etBarCode.getText().toString().trim();
+        int goodsNum = Integer.valueOf(etGoodsNum.getText().toString().trim());
         if ("".equals(goodsName)||"".equals(goodsPrice)||"".equals(goodsBarcode)){
             Toast.makeText(getActivity(), "商品信息不能为空", Toast.LENGTH_SHORT).show();
         }else {
-            Goods goods = new Goods(goodsName,goodsPrice,goodsBarcode,Constant.goodsIconList[new Random().nextInt(22)],true);
+            Goods goods = new Goods(goodsName,goodsPrice,goodsBarcode,Constant.goodsIconList[new Random().nextInt(22)],1,true);
             DataBaseUtil.insertData(goods);
             etGoodsName.setText("");
             etGoodsPrice.setText("");

@@ -27,10 +27,15 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
 
     private List<Goods> goodsList;
     private Context mContext;
+    private IitemSelect iitemSelect;
+    private int num;
+    private boolean is_Checked = true;
 
-    public GoodsAdapter(List<Goods> goodsList) {
+    public GoodsAdapter(List<Goods> goodsList,IitemSelect iitemSelect) {
         this.goodsList = goodsList;
+        this.iitemSelect = iitemSelect;
     }
+
 
     @NonNull
     @Override
@@ -45,26 +50,27 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
         Picasso.get().load(goodsList.get(i).getImgResId()).into(myViewHolder.imageView);
         myViewHolder.tvName.setText(goodsList.get(i).getName());
         myViewHolder.tvPrice.setText("¥"+goodsList.get(i).getPrice());
+        num = goodsList.get(i).getNumble();
+        myViewHolder.tvGoodsNum.setText(String.valueOf(num));
         myViewHolder.ibReduce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNumPlus(myViewHolder.tvGoodsNum,0);
+                num = setNumPlus(myViewHolder.tvGoodsNum,0);
+                iitemSelect.onItemChecked(i,is_Checked,goodsList.get(i).getPrice(),num);
             }
         });
         myViewHolder.ibPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNumPlus(myViewHolder.tvGoodsNum,1);
+                num = setNumPlus(myViewHolder.tvGoodsNum,1);
+                iitemSelect.onItemChecked(i,is_Checked,goodsList.get(i).getPrice(),num);
             }
         });
         myViewHolder.cbSelectGoods.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    L.i("isChecked11111111:"+i);
-                }else {
-                    L.i("isChecked22222222:"+i);
-                }
+                is_Checked = isChecked;
+                iitemSelect.onItemChecked(i,isChecked,goodsList.get(i).getPrice(),num);
             }
         });
         if (goodsList.get(i).getIsChecked()){
@@ -81,7 +87,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
 
 
     //商品数量加一或减一
-    private void setNumPlus(TextView tvGoodsNum,int flag){
+    private int setNumPlus(TextView tvGoodsNum,int flag){
         int num = Integer.valueOf(tvGoodsNum.getText().toString());
         if (flag==0){
             if (num>1){
@@ -95,6 +101,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
             }
         }
         tvGoodsNum.setText(String.valueOf(num));
+        return num;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
@@ -125,4 +132,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
         notifyDataSetChanged();
     }
 
+    public interface IitemSelect{
+        void onItemChecked(int position,boolean isCheck,String price,int num);
+    }
 }

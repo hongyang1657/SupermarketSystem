@@ -15,14 +15,16 @@ public class Goods {
     private String barCode;
     //@Transient    //使用该注释的属性不会被存入数据库的字段中
     private int imgResId;
+    private int numble;
     private boolean isChecked;
-    @Generated(hash = 1555374506)
+    @Generated(hash = 1172340983)
     public Goods(String name, String price, String barCode, int imgResId,
-            boolean isChecked) {
+            int numble, boolean isChecked) {
         this.name = name;
         this.price = price;
         this.barCode = barCode;
         this.imgResId = imgResId;
+        this.numble = numble;
         this.isChecked = isChecked;
     }
     @Generated(hash = 1770709345)
@@ -52,6 +54,12 @@ public class Goods {
     public void setImgResId(int imgResId) {
         this.imgResId = imgResId;
     }
+    public int getNumble() {
+        return this.numble;
+    }
+    public void setNumble(int numble) {
+        this.numble = numble;
+    }
     public boolean getIsChecked() {
         return this.isChecked;
     }
@@ -65,6 +73,7 @@ public class Goods {
                 "name='" + name + '\'' +
                 ", price='" + price + '\'' +
                 ", barCode='" + barCode + '\'' +
+                ", numble=" + numble +
                 '}';
     }
 }

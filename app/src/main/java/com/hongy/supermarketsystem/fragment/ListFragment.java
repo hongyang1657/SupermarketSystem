@@ -19,7 +19,7 @@ import com.hongy.supermarketsystem.utils.L;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
 
     private List<Goods> goodsList = new ArrayList<>();
     private GoodsAdapter adapter;
@@ -36,13 +36,12 @@ public class ListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        L.i("onResume");
         refreshData();
     }
 
     private void initView(View view){
         recyclerView = view.findViewById(R.id.recycler_view_search_list);
-        adapter = new GoodsAdapter(goodsList);
+        adapter = new GoodsAdapter(goodsList,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
     }
@@ -50,8 +49,13 @@ public class ListFragment extends Fragment {
     private void refreshData(){
         goodsList = DataBaseUtil.queryAll();
         for (int i=0;i<goodsList.size();i++){
-            L.i("goodsList:"+goodsList.get(i).toString());
+            //L.i("goodsList:"+goodsList.get(i).toString());
         }
         adapter.notifyData(goodsList);
+    }
+
+    @Override
+    public void onItemChecked(int position, boolean isCheck, String price, int num) {
+
     }
 }
