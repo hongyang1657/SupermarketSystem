@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
     private CheckBox cbTotal;
     private Button btTotal;
     private TextView tvTotalPrice;
+    private EditText etCodebar;
     private GoodsAdapter adapter;
     private List<Goods> goodsList = new ArrayList<>();
 
