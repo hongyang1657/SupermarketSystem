@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.hongy.supermarketsystem.R;
 import com.hongy.supermarketsystem.bean.Goods;
+import com.hongy.supermarketsystem.bean.GoodsItemProprety;
 import com.hongy.supermarketsystem.fragment.adapter.GoodsAdapter;
 import com.hongy.supermarketsystem.utils.Constant;
 import com.hongy.supermarketsystem.utils.DataBaseUtil;
@@ -31,8 +32,10 @@ import com.hongy.supermarketsystem.utils.L;
 import com.hongy.supermarketsystem.zxing.activity.CaptureActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
@@ -45,6 +48,7 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
     private Button btTotal;
     private TextView tvTotalPrice;
     private EditText etCodebar;
+    private Button btAddBarcode;
     private GoodsAdapter adapter;
     private List<Goods> goodsList = new ArrayList<>();
 
@@ -63,6 +67,8 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
         cbTotal = view.findViewById(R.id.cb_total);
         btTotal = view.findViewById(R.id.bt_settle_accounts);
         tvTotalPrice = view.findViewById(R.id.tv_total);
+        etCodebar = view.findViewById(R.id.et_input_barcode);
+        btAddBarcode = view.findViewById(R.id.bt_input_barcode);
         adapter = new GoodsAdapter(goodsList,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
@@ -80,6 +86,14 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
                     goodsList.get(i).setIsChecked(isChecked);
                 }
                 adapter.notifyData(goodsList);
+            }
+        });
+        btAddBarcode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //手动输入条形码并添加
+                searchGoods(etCodebar.getText().toString().trim());
+                etCodebar.setText("");
             }
         });
     }
@@ -104,7 +118,9 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
             Bundle bundle = data.getExtras();
             String scanResult = bundle.getString(Constant.INTENT_EXTRA_KEY_QR_SCAN);
             //查询数据库中有没有此商品
+            L.i("条码："+scanResult);
             searchGoods(scanResult);
+            etCodebar.setText(scanResult);
         }
     }
 
@@ -129,36 +145,47 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
         boolean isRepetition = false;
         //判断如果清单中已经有该商品，则不添加新的item，而是在该商品数量上加一
         List<Goods> scanResultList = DataBaseUtil.queryByBarcode(scanResult);
-        if (goodsList.size()==0){
-            isRepetition = false;
-        }
 
-        for (int i=0;i<goodsList.size();i++){
-            if (goodsList.get(i).getBarCode().equals(scanResultList.get(0).getBarCode())){          //列表中已经有该商品
-                goodsList.get(i).setNumble(goodsList.get(i).getNumble()+1);
-                L.i("121211111111111212"+scanResultList.get(0).toString());
-                isRepetition = true;
+        if (scanResultList.size()==0){          //没有该商品
+            //收银扫描发现没有该商品
+            L.i("收银扫描发现没有该商品");
+            Toast.makeText(getActivity(), "没有该商品", Toast.LENGTH_SHORT).show();
+        }else {
+            if (goodsList.size()==0){
+                isRepetition = false;
             }
+            for (int i=0;i<goodsList.size();i++){
+                if (goodsList.get(i).getBarCode().equals(scanResultList.get(0).getBarCode())){          //列表中已经有该商品
+                    goodsList.get(i).setNumble(goodsList.get(i).getNumble()+1);
+                    L.i("121211111111111212"+scanResultList.get(0).toString());
+                    isRepetition = true;
+                }
+            }
+            if (!isRepetition){
+                goodsList.add(scanResultList.get(0));
+            }
+            adapter.notifyData(goodsList);
         }
-
-        if (!isRepetition){
-            goodsList.add(scanResultList.get(0));
-        }
-
-        adapter.notifyData(goodsList);
     }
 
+    private Map<Integer,GoodsItemProprety> itemPropretyMap = new HashMap<>();
     /**
      * 购物车里商品信息改变
      * @param position  item位置
-     * @param isCheck   是否选中
+     * @param isChecked   是否选中
      * @param price     价格
      * @param num   数量
      */
     @Override
-    public void onItemChecked(int position,boolean isCheck,String price,int num) {
-        L.i("position:"+position+" ischeck:"+isCheck+" price:"+price+"  num:"+num);
-        Set<Integer> set = new HashSet<>();
+    public void onItemChecked(int position,boolean isChecked,String price,int num) {
+        L.i("position:"+position+" isChecked:"+isChecked+" price:"+price+"  num:"+num);
+        itemPropretyMap.put(position,new GoodsItemProprety(isChecked,price,num));
 
+        for (int i=0;i<itemPropretyMap.size();i++){
+
+            if (itemPropretyMap.get(i).isIschecked()){      //该item被选中（表示价格需要计算）
+
+            }
+        }
     }
 }
