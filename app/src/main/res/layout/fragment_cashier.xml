@@ -51,7 +51,7 @@
         android:layout_height="60dp">
         <CheckBox
             android:id="@+id/cb_total"
-            android:text="  全选"
+            android:text="  全选(0)"
             android:textSize="14sp"
             android:textColor="@color/colorBlack"
             android:button="@null"

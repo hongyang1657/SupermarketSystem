@@ -29,6 +29,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
     private Context mContext;
     private IitemSelect iitemSelect;
     private int num;
+    private boolean isCheckedd;
 
     public GoodsAdapter(List<Goods> goodsList,IitemSelect iitemSelect) {
         this.goodsList = goodsList;
@@ -50,6 +51,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
         Picasso.get().load(goodsList.get(i).getImgResId()).into(myViewHolder.imageView);
         myViewHolder.tvName.setText(goodsList.get(i).getName());
         myViewHolder.tvPrice.setText("¥"+goodsList.get(i).getPrice());
+        myViewHolder.tvBarcode.setText(goodsList.get(i).getBarCode());
         num = goodsList.get(i).getNumble();
         myViewHolder.tvGoodsNum.setText(String.valueOf(num));
         myViewHolder.cbSelectGoods.setChecked(goodsList.get(i).getIsChecked());
@@ -72,11 +74,17 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
         myViewHolder.cbSelectGoods.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {    //选择item按钮
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                goodsList.get(i).setIsChecked(isChecked);
+                isCheckedd = isChecked;
+            }
+        });
+        myViewHolder.cbSelectGoods.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goodsList.get(i).setIsChecked(isCheckedd);
                 iitemSelect.onGoodsListChanged(goodsList);
             }
         });
-
+        iitemSelect.onGoodsListChanged(goodsList);
     }
 
     @Override
@@ -119,6 +127,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
             imageView = itemView.findViewById(R.id.iv_goods);
             tvName = itemView.findViewById(R.id.tv_goods_name);
             tvPrice = itemView.findViewById(R.id.tv_goods_price);
+            tvBarcode = itemView.findViewById(R.id.tv_goods_barcode);
             llGoodsNum = itemView.findViewById(R.id.ll_seting_goods_num);
             ibReduce = itemView.findViewById(R.id.ib_reduce);
             ibPlus = itemView.findViewById(R.id.ib_plus);
