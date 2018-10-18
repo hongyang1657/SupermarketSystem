@@ -6,8 +6,10 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Transient;
 import org.greenrobot.greendao.annotation.Unique;
 
+import cn.bmob.v3.BmobObject;
+
 @Entity
-public class Goods {
+public class Goods extends BmobObject{
 
     private String name;
     private String price;
@@ -74,6 +76,7 @@ public class Goods {
                 ", price='" + price + '\'' +
                 ", barCode='" + barCode + '\'' +
                 ", numble=" + numble +
+                ", isChecked=" + isChecked +
                 '}';
     }
 }

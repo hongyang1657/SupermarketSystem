@@ -13,6 +13,8 @@ import com.hongy.supermarketsystem.fragment.EnteringFragment;
 import com.hongy.supermarketsystem.fragment.ListFragment;
 import com.hongy.supermarketsystem.fragment.MineFragment;
 
+import cn.bmob.v3.Bmob;
+
 
 public class MainActivity extends Activity {
 
@@ -28,6 +30,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         initView();
+        Bmob.initialize(this,"4b672501c10d79c6b6598238db13bf54");  //初始化bmob
     }
 
     private void initView(){

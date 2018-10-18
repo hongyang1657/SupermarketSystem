@@ -168,24 +168,12 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
         }
     }
 
-    private Map<Integer,GoodsItemProprety> itemPropretyMap = new HashMap<>();
-    /**
-     * 购物车里商品信息改变
-     * @param position  item位置
-     * @param isChecked   是否选中
-     * @param price     价格
-     * @param num   数量
-     */
+
     @Override
-    public void onItemChecked(int position,boolean isChecked,String price,int num) {
-        L.i("position:"+position+" isChecked:"+isChecked+" price:"+price+"  num:"+num);
-        itemPropretyMap.put(position,new GoodsItemProprety(isChecked,price,num));
-
-        for (int i=0;i<itemPropretyMap.size();i++){
-
-            if (itemPropretyMap.get(i).isIschecked()){      //该item被选中（表示价格需要计算）
-
-            }
+    public void onGoodsListChanged(List<Goods> goodsList) {
+        this.goodsList = goodsList;
+        for (int i=0;i<goodsList.size();i++){
+            L.i("goodsList:"+goodsList.get(i).toString());
         }
     }
 }

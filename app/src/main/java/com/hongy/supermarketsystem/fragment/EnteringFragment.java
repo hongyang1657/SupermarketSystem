@@ -32,6 +32,8 @@ import com.hongy.supermarketsystem.zxing.activity.CaptureActivity;
 
 import java.util.Random;
 
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
@@ -114,6 +116,17 @@ public class EnteringFragment extends Fragment {
             etGoodsPrice.setText("");
             etBarCode.setText("");
             Toast.makeText(getActivity(), "添加商品成功", Toast.LENGTH_SHORT).show();
+
+            goods.save(new SaveListener<String>() {
+                @Override
+                public void done(String s, BmobException e) {
+                    if (e==null){
+                        L.i("添加bmob数据成功：objectId："+s);
+                    }else {
+                        L.i("创建bmob数据失败："+e.getMessage());
+                    }
+                }
+            });
         }
     }
 

@@ -19,6 +19,10 @@ import com.hongy.supermarketsystem.utils.L;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+
 public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
 
     private List<Goods> goodsList = new ArrayList<>();
@@ -47,15 +51,38 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
     }
 
     private void refreshData(){
-        goodsList = DataBaseUtil.queryAll();
-        for (int i=0;i<goodsList.size();i++){
-            //L.i("goodsList:"+goodsList.get(i).toString());
-        }
-        adapter.notifyData(goodsList);
+        //goodsList = DataBaseUtil.queryAll();      //本地数据库查询所有商品数据
+//        for (int i=0;i<goodsList.size();i++){
+//            L.i("goodsList:"+goodsList.get(i).toString());
+//        }
+
+        //查询bomb数据库
+        BmobQuery<Goods> query = new BmobQuery<>();
+        query.setLimit(20);
+        query.findObjects(new FindListener<Goods>() {
+            @Override
+            public void done(List<Goods> list, BmobException e) {
+                if (e==null){
+                    goodsList = list;
+                    for (int i=0;i<goodsList.size();i++){
+                        L.i("查询bmob goodsList:"+goodsList.get(i).toString());
+                    }
+                    adapter.notifyData(goodsList);
+                }else {
+                    L.i("查询bmob失败："+e.getMessage());
+                }
+            }
+        });
+
+
+
     }
 
     @Override
-    public void onItemChecked(int position, boolean isCheck, String price, int num) {
+    public void onGoodsListChanged(List<Goods> goodsList) {
+        for (int i=0;i<goodsList.size();i++){
 
+            L.i("goodsList:"+goodsList.get(i).toString());
+        }
     }
 }

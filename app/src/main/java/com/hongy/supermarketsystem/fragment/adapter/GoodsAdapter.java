@@ -29,7 +29,6 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
     private Context mContext;
     private IitemSelect iitemSelect;
     private int num;
-    private boolean is_Checked = true;
 
     public GoodsAdapter(List<Goods> goodsList,IitemSelect iitemSelect) {
         this.goodsList = goodsList;
@@ -47,37 +46,37 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int i) {
+        L.i("刷新了onBindViewHolder："+i);
         Picasso.get().load(goodsList.get(i).getImgResId()).into(myViewHolder.imageView);
         myViewHolder.tvName.setText(goodsList.get(i).getName());
         myViewHolder.tvPrice.setText("¥"+goodsList.get(i).getPrice());
         num = goodsList.get(i).getNumble();
         myViewHolder.tvGoodsNum.setText(String.valueOf(num));
+        myViewHolder.cbSelectGoods.setChecked(goodsList.get(i).getIsChecked());
         myViewHolder.ibReduce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                num = setNumPlus(myViewHolder.tvGoodsNum,0);
-                iitemSelect.onItemChecked(i,is_Checked,goodsList.get(i).getPrice(),num);
+                num = setNumPlus(myViewHolder.tvGoodsNum,0);  //减一
+                goodsList.get(i).setNumble(num);
+                iitemSelect.onGoodsListChanged(goodsList);
             }
         });
         myViewHolder.ibPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                num = setNumPlus(myViewHolder.tvGoodsNum,1);
-                iitemSelect.onItemChecked(i,is_Checked,goodsList.get(i).getPrice(),num);
+                num = setNumPlus(myViewHolder.tvGoodsNum,1);  //加一
+                goodsList.get(i).setNumble(num);
+                iitemSelect.onGoodsListChanged(goodsList);
             }
         });
-        myViewHolder.cbSelectGoods.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        myViewHolder.cbSelectGoods.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {    //选择item按钮
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                is_Checked = isChecked;
-                iitemSelect.onItemChecked(i,isChecked,goodsList.get(i).getPrice(),num);
+                goodsList.get(i).setIsChecked(isChecked);
+                iitemSelect.onGoodsListChanged(goodsList);
             }
         });
-        if (goodsList.get(i).getIsChecked()){
-            myViewHolder.cbSelectGoods.setChecked(true);
-        }else {
-            myViewHolder.cbSelectGoods.setChecked(false);
-        }
+
     }
 
     @Override
@@ -133,6 +132,6 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
     }
 
     public interface IitemSelect{
-        void onItemChecked(int position,boolean isCheck,String price,int num);
+        void onGoodsListChanged(List<Goods> goodsList);
     }
 }
