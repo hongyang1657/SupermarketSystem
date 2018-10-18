@@ -4,6 +4,7 @@ package com.hongy.supermarketsystem.fragment;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
 
     private List<Goods> goodsList = new ArrayList<>();
     private GoodsAdapter adapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
 
     @Nullable
@@ -45,9 +47,18 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
 
     private void initView(View view){
         recyclerView = view.findViewById(R.id.recycler_view_search_list);
+        swipeRefreshLayout = view.findViewById(R.id.list_swipe_layout);
         adapter = new GoodsAdapter(goodsList,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //TODO 下拉刷新
+                refreshData();
+            }
+        });
+
     }
 
     private void refreshData(){
@@ -71,6 +82,7 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
                 }else {
                     L.i("查询bmob失败："+e.getMessage());
                 }
+                swipeRefreshLayout.setRefreshing(false);   //结束下拉刷新的动画
             }
         });
 

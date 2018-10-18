@@ -38,6 +38,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+
 import static android.app.Activity.RESULT_OK;
 
 public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelect{
@@ -141,12 +145,30 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
         }
     }
 
-    private void searchGoods(String scanResult){
+    private List<Goods> scanResultList;
+    private void searchGoods(final String scanResult){
         boolean isRepetition = false;
-        //判断如果清单中已经有该商品，则不添加新的item，而是在该商品数量上加一
-        List<Goods> scanResultList = DataBaseUtil.queryByBarcode(scanResult);
 
-        if (scanResultList.size()==0){          //没有该商品
+        //判断如果清单中已经有该商品，则不添加新的item，而是在该商品数量上加一
+        //scanResultList = DataBaseUtil.queryByBarcode(scanResult);      //本地数据库查询
+
+        //bmob条件查询
+        BmobQuery<Goods> query = new BmobQuery<>();
+        query.addWhereEqualTo("barCode",scanResult);
+        query.setLimit(1);
+        query.findObjects(new FindListener<Goods>() {
+            @Override
+            public void done(List<Goods> list, BmobException e) {
+                if (e==null){
+                    scanResultList = list;
+                }else {
+                    L.i("查询失败："+e.getMessage());
+                    scanResultList = new ArrayList<>();
+                }
+            }
+        });
+
+        if (scanResultList==null||scanResultList.size()==0){          //没有该商品
             //收银扫描发现没有该商品
             L.i("收银扫描发现没有该商品");
             Toast.makeText(getActivity(), "没有该商品", Toast.LENGTH_SHORT).show();
