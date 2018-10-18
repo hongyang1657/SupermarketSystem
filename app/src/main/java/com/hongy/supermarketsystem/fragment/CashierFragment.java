@@ -146,8 +146,9 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
     }
 
     private List<Goods> scanResultList;
+    private boolean isRepetition;
     private void searchGoods(final String scanResult){
-        boolean isRepetition = false;
+        isRepetition = false;
 
         //判断如果清单中已经有该商品，则不添加新的item，而是在该商品数量上加一
         //scanResultList = DataBaseUtil.queryByBarcode(scanResult);      //本地数据库查询
@@ -160,34 +161,37 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
             @Override
             public void done(List<Goods> list, BmobException e) {
                 if (e==null){
+                    L.i("bmob数据库查询：barCode："+scanResult+"的数据size："+list.size());
                     scanResultList = list;
                 }else {
                     L.i("查询失败："+e.getMessage());
-                    scanResultList = new ArrayList<>();
+                    scanResultList = null;
+                }
+
+                if (scanResultList==null){          //没有该商品
+                    //收银扫描发现没有该商品
+                    L.i("收银扫描发现没有该商品");
+                    Toast.makeText(getActivity(), "没有该商品", Toast.LENGTH_SHORT).show();
+                }else {
+                    if (goodsList.size()==0){
+                        isRepetition = false;
+                    }
+                    for (int i=0;i<goodsList.size();i++){
+                        if (goodsList.get(i).getBarCode().equals(scanResultList.get(0).getBarCode())){          //列表中已经有该商品
+                            goodsList.get(i).setNumble(goodsList.get(i).getNumble()+1);
+                            L.i("121211111111111212"+scanResultList.get(0).toString());
+                            isRepetition = true;
+                        }
+                    }
+                    if (!isRepetition){
+                        goodsList.add(scanResultList.get(0));
+                    }
+                    adapter.notifyData(goodsList);
                 }
             }
         });
 
-        if (scanResultList==null||scanResultList.size()==0){          //没有该商品
-            //收银扫描发现没有该商品
-            L.i("收银扫描发现没有该商品");
-            Toast.makeText(getActivity(), "没有该商品", Toast.LENGTH_SHORT).show();
-        }else {
-            if (goodsList.size()==0){
-                isRepetition = false;
-            }
-            for (int i=0;i<goodsList.size();i++){
-                if (goodsList.get(i).getBarCode().equals(scanResultList.get(0).getBarCode())){          //列表中已经有该商品
-                    goodsList.get(i).setNumble(goodsList.get(i).getNumble()+1);
-                    L.i("121211111111111212"+scanResultList.get(0).toString());
-                    isRepetition = true;
-                }
-            }
-            if (!isRepetition){
-                goodsList.add(scanResultList.get(0));
-            }
-            adapter.notifyData(goodsList);
-        }
+
     }
 
 
