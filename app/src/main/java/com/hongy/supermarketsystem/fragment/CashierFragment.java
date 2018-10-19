@@ -27,6 +27,8 @@ import android.widget.Toast;
 import com.hongy.supermarketsystem.R;
 import com.hongy.supermarketsystem.bean.Goods;
 import com.hongy.supermarketsystem.fragment.adapter.GoodsAdapter;
+import com.hongy.supermarketsystem.fragment.impl.ICashierFragmentView;
+import com.hongy.supermarketsystem.presenter.BmobQueryPresenter;
 import com.hongy.supermarketsystem.utils.Constant;
 import com.hongy.supermarketsystem.utils.L;
 import com.hongy.supermarketsystem.zxing.activity.CaptureActivity;
@@ -41,35 +43,35 @@ import cn.bmob.v3.listener.FindListener;
 
 import static android.app.Activity.RESULT_OK;
 
-public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelect{
+public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelect,ICashierFragmentView{
 
-    private Button btScan;
     private RecyclerView recyclerView;
     private CheckBox cbTotal;
     private Button btTotal;
     private TextView tvTotalPrice;
     private EditText etCodebar;
-    private Button btAddBarcode;
     private GoodsAdapter adapter;
     private List<Goods> goodsList = new ArrayList<>();
     private boolean ischeck;
+    private BmobQueryPresenter bmobQueryPresenter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cashier, container, false);
         initView(view);
+        bmobQueryPresenter = new BmobQueryPresenter(this);
         return view;
     }
 
     private void initView(View view){
-        btScan = view.findViewById(R.id.bt_scan);
+        Button btScan = view.findViewById(R.id.bt_scan);
         recyclerView = view.findViewById(R.id.recycler_view_cashier_list);
         cbTotal = view.findViewById(R.id.cb_total);
         btTotal = view.findViewById(R.id.bt_settle_accounts);
         tvTotalPrice = view.findViewById(R.id.tv_total);
         etCodebar = view.findViewById(R.id.et_input_barcode);
-        btAddBarcode = view.findViewById(R.id.bt_input_barcode);
+        Button btAddBarcode = view.findViewById(R.id.bt_input_barcode);
         adapter = new GoodsAdapter(goodsList,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
@@ -77,19 +79,16 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
             }
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 //L.i("onScrolled:  dx:"+dx+"   dy:"+dy);
-                if(recyclerView.canScrollVertically(1)){
-                }else {
+                if(!recyclerView.canScrollVertically(1)){
                     L.i("滑动到底部");//滑动到底部
                 }
-                if(recyclerView.canScrollVertically(-1)){
-                }else {
+                if(!recyclerView.canScrollVertically(-1)){
                     L.i( "滑动到顶部");//滑动到顶部
                 }
             }
@@ -170,51 +169,13 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
     }
 
     private List<Goods> scanResultList;
-    private boolean isRepetition;
+    private boolean isRepetition;       //判断列表中是否已经有该商品
     private void searchGoods(final String scanResult){
         isRepetition = false;
-
         //判断如果清单中已经有该商品，则不添加新的item，而是在该商品数量上加一
         //scanResultList = DataBaseUtil.queryByBarcode(scanResult);      //本地数据库查询
-
         //bmob条件查询
-        BmobQuery<Goods> query = new BmobQuery<>();
-        query.addWhereEqualTo("barCode",scanResult);
-        query.setLimit(1);
-        query.findObjects(new FindListener<Goods>() {
-            @Override
-            public void done(List<Goods> list, BmobException e) {
-                if (e==null){
-                    L.i("bmob数据库查询：barCode："+scanResult+"的数据size："+list.size());
-                    scanResultList = list;
-                }else {
-                    L.i("查询失败："+e.getMessage());
-                    scanResultList = null;
-                }
-
-                if (scanResultList==null){          //没有该商品
-                    //收银扫描发现没有该商品
-                    L.i("收银扫描发现没有该商品");
-                    Toast.makeText(getActivity(), "没有该商品", Toast.LENGTH_SHORT).show();
-                }else {
-                    if (goodsList.size()==0){
-                        isRepetition = false;
-                    }
-                    for (int i=0;i<goodsList.size();i++){
-                        if (goodsList.get(i).getBarCode().equals(scanResultList.get(0).getBarCode())){          //列表中已经有该商品
-                            goodsList.get(i).setNumble(goodsList.get(i).getNumble()+1);
-                            L.i("121211111111111212"+scanResultList.get(0).toString());
-                            isRepetition = true;
-                        }
-                    }
-                    if (!isRepetition){
-                        goodsList.add(scanResultList.get(0));
-                    }
-                    adapter.notifyData(goodsList);
-                }
-            }
-        });
-
+        bmobQueryPresenter.queryObjects("barCode",scanResult,1);
 
     }
 
@@ -260,5 +221,42 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
 
         handler.sendMessage(message);
 
+    }
+
+    @Override
+    public void onItemLongClickListener(int position) {
+        L.i("onItemLongClickListener:"+position);
+    }
+
+    //bmob查询结果
+    @Override
+    public void showBmobQueryResult(List<Goods> list, String e) {
+        if (e==null){
+            scanResultList = list;
+        }else {
+            L.i("查询失败："+e);
+            scanResultList = null;
+        }
+
+        if (scanResultList==null){          //没有该商品
+            //收银扫描发现没有该商品
+            L.i("收银扫描发现没有该商品");
+            Toast.makeText(getActivity(), "没有该商品", Toast.LENGTH_SHORT).show();
+        }else {
+            if (goodsList.size()==0){
+                isRepetition = false;
+            }
+            for (int i=0;i<goodsList.size();i++){
+                if (goodsList.get(i).getBarCode().equals(scanResultList.get(0).getBarCode())){          //列表中已经有该商品
+                    goodsList.get(i).setNumble(goodsList.get(i).getNumble()+1);
+                    L.i("scanResultList:"+scanResultList.get(0).toString());
+                    isRepetition = true;
+                }
+            }
+            if (!isRepetition){
+                goodsList.add(scanResultList.get(0));
+            }
+            adapter.notifyData(goodsList);
+        }
     }
 }

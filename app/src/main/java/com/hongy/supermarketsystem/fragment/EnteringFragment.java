@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -41,10 +40,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class EnteringFragment extends Fragment {
 
-    private String appcode = "APPCODE 5353076bdf71427c8c8aa5ab97eec66c";
-    private Button btScan,btAddGoods;
     private EditText etBarCode,etGoodsName,etGoodsPrice,etGoodsNum;
-    private Switch aSwitch;
     private boolean isUseOnlineGoodsSearch = false;
 
     @Nullable
@@ -56,13 +52,13 @@ public class EnteringFragment extends Fragment {
     }
 
     private void initView(View view){
-        btScan = view.findViewById(R.id.bt_scan);
-        btAddGoods = view.findViewById(R.id.bt_add_goods);
+        Button btScan = view.findViewById(R.id.bt_scan);
+        Button btAddGoods = view.findViewById(R.id.bt_add_goods);
         etBarCode = view.findViewById(R.id.et_bar_code);
         etGoodsName = view.findViewById(R.id.et_goods_name);
         etGoodsPrice = view.findViewById(R.id.et_goods_price);
         etGoodsNum = view.findViewById(R.id.et_goods_num);
-        aSwitch = view.findViewById(R.id.sw);
+        Switch aSwitch = view.findViewById(R.id.sw);
         btScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,7 +138,7 @@ public class EnteringFragment extends Fragment {
             //如果开启在线商品信息查询
             if (isUseOnlineGoodsSearch){
                 ApiManager.serviceBarcode
-                        .getGoodsDetails(appcode,scanResult)
+                        .getGoodsDetails(Constant.appcode,scanResult)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.newThread())
                         .subscribe(new Subscriber<GoodsInfoFromInternet>() {

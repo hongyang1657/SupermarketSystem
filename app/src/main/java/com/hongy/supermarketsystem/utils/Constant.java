@@ -16,4 +16,6 @@ public class Constant {
             R.mipmap.goods_icon_5,R.mipmap.goods_icon_6,R.mipmap.goods_icon_7,R.mipmap.goods_icon_8,R.mipmap.goods_icon_9,R.mipmap.goods_icon_10,
             R.mipmap.goods_icon_11,R.mipmap.goods_icon_12,R.mipmap.goods_icon_13,R.mipmap.goods_icon_14,R.mipmap.goods_icon_15,R.mipmap.goods_icon_16,
             R.mipmap.goods_icon_17,R.mipmap.goods_icon_18,R.mipmap.goods_icon_19,R.mipmap.goods_icon_20,R.mipmap.goods_icon_21,R.mipmap.goods_icon_22};
+
+    public static final String appcode = "APPCODE 5353076bdf71427c8c8aa5ab97eec66c";      //条码查询api appcode
 }

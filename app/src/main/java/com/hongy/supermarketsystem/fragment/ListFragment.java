@@ -97,4 +97,9 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
             L.i("goodsList:"+goodsList.get(i).toString());
         }
     }
+
+    @Override
+    public void onItemLongClickListener(int position) {
+        L.i("onItemLongClickListener:"+position);
+    }
 }

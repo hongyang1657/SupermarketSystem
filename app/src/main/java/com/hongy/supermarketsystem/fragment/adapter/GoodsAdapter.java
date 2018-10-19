@@ -11,17 +11,12 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
-
 import com.hongy.supermarketsystem.R;
 import com.hongy.supermarketsystem.bean.Goods;
-import com.hongy.supermarketsystem.utils.Constant;
 import com.hongy.supermarketsystem.utils.L;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
-import java.util.Random;
 
 public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder>{
 
@@ -48,13 +43,20 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int i) {
         L.i("刷新了onBindViewHolder："+i);
+        num = goodsList.get(i).getNumble();
         Picasso.get().load(goodsList.get(i).getImgResId()).into(myViewHolder.imageView);
         myViewHolder.tvName.setText(goodsList.get(i).getName());
-        myViewHolder.tvPrice.setText("¥"+goodsList.get(i).getPrice());
+        myViewHolder.tvPrice.setText(String.format(mContext.getResources().getString(R.string.goodPrice),goodsList.get(i).getPrice()));
         myViewHolder.tvBarcode.setText(goodsList.get(i).getBarCode());
-        num = goodsList.get(i).getNumble();
         myViewHolder.tvGoodsNum.setText(String.valueOf(num));
         myViewHolder.cbSelectGoods.setChecked(goodsList.get(i).getIsChecked());
+        myViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {        //item长按事件
+            @Override
+            public boolean onLongClick(View view) {
+                iitemSelect.onItemLongClickListener(i);
+                return false;
+            }
+        });
         myViewHolder.ibReduce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +113,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
         return num;
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    static class MyViewHolder extends RecyclerView.ViewHolder{
         private CheckBox cbSelectGoods;
         private ImageView imageView;
         private TextView tvName;
@@ -121,7 +123,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
         private ImageButton ibReduce,ibPlus;
         private TextView tvGoodsNum;
 
-        public MyViewHolder(@NonNull View itemView) {
+        MyViewHolder(View itemView) {
             super(itemView);
             cbSelectGoods = itemView.findViewById(R.id.cb_select_goods);
             imageView = itemView.findViewById(R.id.iv_goods);
@@ -141,6 +143,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
     }
 
     public interface IitemSelect{
-        void onGoodsListChanged(List<Goods> goodsList);
+        void onGoodsListChanged(List<Goods> goodsList);   //商品数据改变的回调
+        void onItemLongClickListener(int position);
     }
 }

@@ -33,7 +33,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.TestActivity"/>
         <activity android:name=".zxing.activity.CaptureActivity"/>
     </application>
 

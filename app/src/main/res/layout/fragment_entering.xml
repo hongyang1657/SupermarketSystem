@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/colorWhite"
     android:layout_width="match_parent"
@@ -16,7 +17,7 @@
 
         <TextView
             android:padding="8dp"
-            android:text="在线条码查询:"
+            android:text="@string/searchCodebarOnline"
             android:gravity="center"
             android:textSize="14sp"
             android:textColor="@color/colorBlack"
@@ -34,7 +35,7 @@
     </LinearLayout>
     <Button
         android:id="@+id/bt_scan"
-        android:text="扫描"
+        android:text="@string/scan"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -49,7 +50,7 @@
 
         <TextView
             android:padding="8dp"
-            android:text="商品条码:"
+            android:text="@string/goodsBar"
             android:gravity="center"
             android:textSize="14sp"
             android:textColor="@color/colorBlack"
@@ -65,7 +66,8 @@
             android:textColor="@color/colorBlack"
             android:gravity="center_vertical"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="LabelFor" />
     </LinearLayout>
     <LinearLayout
         android:layout_margin="10dp"
@@ -77,7 +79,7 @@
 
         <TextView
             android:padding="8dp"
-            android:text="商品名称:"
+            android:text="@string/goodsName"
             android:gravity="center"
             android:textSize="14sp"
             android:textColor="@color/colorBlack"
@@ -92,7 +94,8 @@
             android:textColor="@color/colorBlack"
             android:gravity="center_vertical"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="LabelFor,TextFields" />
     </LinearLayout>
 
     <LinearLayout
@@ -105,7 +108,7 @@
 
         <TextView
             android:padding="8dp"
-            android:text="商品价格:"
+            android:text="@string/goodsPrice"
             android:gravity="center"
             android:textSize="14sp"
             android:textColor="@color/colorBlack"
@@ -121,7 +124,8 @@
             android:textColor="@color/colorBlack"
             android:gravity="center_vertical"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="LabelFor" />
     </LinearLayout>
 
     <LinearLayout
@@ -134,7 +138,7 @@
 
         <TextView
             android:padding="8dp"
-            android:text="商品库存数量:"
+            android:text="@string/goodsNum"
             android:gravity="center"
             android:textSize="14sp"
             android:textColor="@color/colorBlack"
@@ -145,19 +149,20 @@
             android:background="@null"
             android:layout_weight="1"
             android:padding="8dp"
-            android:text="1"
+            android:text="@string/num_1"
             android:inputType="number"
             android:textSize="14sp"
             android:textColor="@color/colorBlack"
             android:gravity="center_vertical"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="LabelFor" />
     </LinearLayout>
 
     <Button
         android:layout_margin="10dp"
         android:id="@+id/bt_add_goods"
-        android:text="添加商品"
+        android:text="@string/add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

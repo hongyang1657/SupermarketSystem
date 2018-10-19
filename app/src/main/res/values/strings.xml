@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">SupermarketSystem</string>
+    <string name="cashier">收银</string>
+    <string name="enter">录入</string>
+    <string name="list">列表</string>
+    <string name="mine">我的</string>
+    <string name="barcode">条形码:</string>
+    <string name="add">添加</string>
+    <string name="scan">扫描</string>
+    <string name="settle">去结算</string>
+    <string name="searchCodebarOnline">在线条码查询:</string>
+    <string name="goodsBar">商品条码:</string>
+    <string name="goodsName">商品名称:</string>
+    <string name="goodsPrice">商品价格:</string>
+    <string name="goodsNum">商品库存数量:</string>
+    <string name="num_1">1</string>
+    <string name="goodPrice">¥%1$s</string>
 </resources>

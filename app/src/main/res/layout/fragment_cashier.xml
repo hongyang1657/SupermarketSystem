@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorCutOffLine2"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -13,7 +14,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="条形码："
+            android:text="@string/barcode"
             android:textColor="@color/colorBlack"
             android:gravity="center"
             android:layout_width="wrap_content"
@@ -25,10 +26,11 @@
             android:layout_weight="1"
             android:inputType="number"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="LabelFor" />
         <Button
             android:id="@+id/bt_input_barcode"
-            android:text="添加"
+            android:text="@string/add"
             android:paddingRight="20dp"
             android:paddingLeft="20dp"
             android:layout_width="wrap_content"
@@ -38,7 +40,7 @@
     <Button
         android:id="@+id/bt_scan"
         android:layout_below="@id/ll_input_barcode"
-        android:text="扫描"
+        android:text="@string/scan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -51,11 +53,11 @@
         android:layout_height="60dp">
         <CheckBox
             android:id="@+id/cb_total"
-            android:text="  全选(0)"
+            android:text=""
             android:textSize="14sp"
             android:textColor="@color/colorBlack"
             android:button="@null"
-            android:drawableLeft="@drawable/checkbox_selecter"
+            android:drawableStart="@drawable/checkbox_selecter"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:layout_width="wrap_content"
@@ -64,21 +66,21 @@
 
         <Button
             android:id="@+id/bt_settle_accounts"
-            android:text="去结算"
+            android:text="@string/settle"
             android:textColor="@color/colorWhite"
             android:textSize="14sp"
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
             android:background="@color/colorTuomanRed"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/tv_total"
-            android:layout_toLeftOf="@id/bt_settle_accounts"
+            android:layout_toStartOf="@id/bt_settle_accounts"
             android:lines="1"
-            android:text="¥0.00"
+            android:text=""
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="@color/colorTuomanRed"
@@ -88,15 +90,16 @@
             android:layout_height="match_parent" />
         <TextView
             android:id="@+id/tv_total_1"
-            android:layout_toLeftOf="@id/tv_total"
+            android:layout_toStartOf="@id/tv_total"
             android:lines="1"
-            android:text="合计:"
-            android:paddingLeft="10dp"
+            android:text=""
+            android:paddingStart="10dp"
             android:textColor="@color/colorBlack"
             android:textSize="14sp"
             android:gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:ignore="RtlSymmetry" />
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
