@@ -36,4 +36,5 @@
     <color name="colorTuomanRed">#f62a5a</color>
     <color name="colorRbSelected">#1296db</color>
     <color name="colorRbNotSelected">#8a8a8a</color>
+    <color name="colorRed">#d81e06</color>
 </resources>
