@@ -15,6 +15,7 @@ public class SearchActivity extends Activity{
 
     private EditText etSerach;
     private TextView tvSerach;
+    private String content = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,11 +25,14 @@ public class SearchActivity extends Activity{
     }
 
     private void initView(){
+        content = getIntent().getStringExtra("content");
         etSerach = findViewById(R.id.et_search);
         tvSerach = findViewById(R.id.tv_bt_search);
         etSerach.setFocusable(true);
         etSerach.setFocusableInTouchMode(true);
         etSerach.requestFocus();
+        etSerach.setText(content);
+        etSerach.setSelection(content.length());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         tvSerach.setOnClickListener(new View.OnClickListener() {
             @Override

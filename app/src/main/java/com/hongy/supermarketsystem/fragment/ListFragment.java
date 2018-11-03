@@ -22,6 +22,7 @@ import com.hongy.supermarketsystem.view.SearchActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
@@ -42,13 +43,14 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         initView(view);
+        conditionQueryData(tvSearch.getText().toString().trim());
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        refreshData();
+
     }
 
     private void initView(View view){
@@ -71,7 +73,7 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
                 if(!recyclerView.canScrollVertically(1)){
                     L.i("滑动到底部"+goodsList.size());//滑动到底部
                     //TODO 加载新数据
-                    loadMoreData(goodsList.size());
+                    loadMoreData(goodsList.size(),tvSearch.getText().toString().trim());
                 }
                 if(!recyclerView.canScrollVertically(-1)){
                     L.i( "滑动到顶部");//滑动到顶部
@@ -82,7 +84,7 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
             @Override
             public void onRefresh() {
                 //TODO 下拉刷新
-                refreshData();
+                conditionQueryData(tvSearch.getText().toString().trim());
             }
         });
         tvSearch.setOnClickListener(new View.OnClickListener() {
@@ -90,40 +92,23 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
             public void onClick(View v) {
                 //跳转搜索页面
                 Intent intent = new Intent(getActivity(), SearchActivity.class);
+                intent.putExtra("content",tvSearch.getText().toString().trim());
                 startActivityForResult(intent,1);
             }
         });
     }
 
-    //刷新数据
-    private void refreshData(){
-        //goodsList = DataBaseUtil.queryAll();      //本地数据库查询所有商品数据
-//        for (int i=0;i<goodsList.size();i++){
-//            L.i("goodsList:"+goodsList.get(i).toString());
-//        }
-        //查询bomb数据库
-        BmobQuery<Goods> query = new BmobQuery<>();
-        query.setLimit(20);
-        query.findObjects(new FindListener<Goods>() {
-            @Override
-            public void done(List<Goods> list, BmobException e) {
-                if (e==null){
-                    goodsList = list;
-                    for (int i=0;i<goodsList.size();i++){
-                        //L.i("查询bmob goodsList:"+goodsList.get(i).toString());
-                    }
-                    adapter.notifyData(goodsList);
-                }else {
-                    L.i("查询bmob失败："+e.getMessage());
-                }
-                swipeRefreshLayout.setRefreshing(false);   //结束下拉刷新的动画
-            }
-        });
-    }
 
     //加载更多数据
-    private void loadMoreData(int num){
+    private void loadMoreData(int num,String content){
         BmobQuery<Goods> query = new BmobQuery<>();
+        if (!content.equals("")){
+            if (judgeQueryType(content)){
+                query.addWhereEqualTo("price",content);
+            }else {
+                query.addWhereContains("name",content);
+            }
+        }
         query.setSkip(num);
         query.setLimit(20);
         query.findObjects(new FindListener<Goods>() {
@@ -140,6 +125,45 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
                 }
             }
         });
+    }
+
+    //根据条件查询数据
+    private void conditionQueryData(String content){
+        BmobQuery<Goods> query = new BmobQuery<>();
+        // 判断content为中文还是纯数字：1.为数字的情况下查询价格  2.为文字的情况下查询商品名称
+        if (!content.equals("")){
+            if (judgeQueryType(content)){
+                query.addWhereEqualTo("price",content);
+            }else {
+                query.addWhereContains("name",content);
+            }
+        }
+        query.setLimit(20);
+        query.findObjects(new FindListener<Goods>() {
+            @Override
+            public void done(List<Goods> list, BmobException e) {
+                if (e==null){
+                    goodsList = list;
+                    for (int i=0;i<goodsList.size();i++){
+                        L.i("查询bmob goodsList:"+goodsList.get(i).toString());
+                    }
+                    adapter.notifyData(goodsList);
+                }else {
+                    L.i("查询bmob失败："+e.getMessage());
+                }
+                swipeRefreshLayout.setRefreshing(false);   //结束下拉刷新的动画
+            }
+        });
+    }
+
+    //判断用户输入的想查询的内容是什么类型
+    private boolean judgeQueryType(String content){
+        for (int i = content.length();--i>=0;){
+            if (!Character.isDigit(content.charAt(i))&&'.'!=content.charAt(i)){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -163,6 +187,8 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
                     String serachContent = data.getExtras().getString("serachContent");
                     L.i("serachContent:"+serachContent);
                     tvSearch.setText(serachContent);
+                    swipeRefreshLayout.setRefreshing(true);  //开始刷新动画
+                    conditionQueryData(serachContent);
                 }
                 break;
         }

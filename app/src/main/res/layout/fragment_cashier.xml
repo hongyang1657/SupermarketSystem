@@ -31,6 +31,7 @@
         <Button
             android:id="@+id/bt_input_barcode"
             android:text="@string/add"
+            android:focusable="true"
             android:paddingRight="20dp"
             android:paddingLeft="20dp"
             android:layout_width="wrap_content"

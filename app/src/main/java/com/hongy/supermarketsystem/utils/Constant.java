@@ -18,4 +18,7 @@ public class Constant {
             R.mipmap.goods_icon_17,R.mipmap.goods_icon_18,R.mipmap.goods_icon_19,R.mipmap.goods_icon_20,R.mipmap.goods_icon_21,R.mipmap.goods_icon_22};
 
     public static final String appcode = "APPCODE 5353076bdf71427c8c8aa5ab97eec66c";      //条码查询api appcode
+
+    public static final String SP_FILE_NAME="supermarketSystem";
+    public static final String IS_NEED_LOGIN = "isNeedLogin";
 }
