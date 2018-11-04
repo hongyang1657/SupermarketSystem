@@ -216,6 +216,7 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
                 isAllChecked = false;
             }
         }
+        L.i("12222222222222222222222211");
         Message message = new Message();
         message.what = 1;
         message.obj = sum.toString();
@@ -228,6 +229,14 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
     @Override
     public void onItemLongClickListener(int position) {
         L.i("onItemLongClickListener:"+position);
+        //删除该条item
+        goodsList.remove(position);
+        adapter.notifyData(goodsList);
+    }
+
+    @Override
+    public void onItemClickListener(int position) {
+
     }
 
     //bmob查询结果

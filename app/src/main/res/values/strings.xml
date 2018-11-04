@@ -12,11 +12,13 @@
     <string name="goodsBar">商品条码:</string>
     <string name="goodsName">商品名称:</string>
     <string name="goodsPrice">商品价格:</string>
-    <string name="goodsNum">商品库存数量:</string>
+    <string name="goodsNum">商品库存:</string>
     <string name="num_1">1</string>
     <string name="goodPrice">¥%1$s</string>
     <string name="login">登录</string>
     <string name="username">账号</string>
     <string name="password">密码</string>
     <string name="logout">退出登录</string>
+    <string name="edit">编辑商品</string>
+    <string name="clean">清除</string>
 </resources>

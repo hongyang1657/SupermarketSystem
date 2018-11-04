@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.hongy.supermarketsystem.R;
 import com.hongy.supermarketsystem.bean.Goods;
+import com.hongy.supermarketsystem.utils.Constant;
 import com.hongy.supermarketsystem.utils.L;
 import com.squareup.picasso.Picasso;
 import java.util.List;
@@ -24,6 +25,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
     private Context mContext;
     private IitemSelect iitemSelect;
     private int num;
+    private String barcode,goodsName,goodsPrice;
     private boolean isCheckedd;
 
     public GoodsAdapter(List<Goods> goodsList,IitemSelect iitemSelect) {
@@ -42,19 +44,28 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int i) {
-        L.i("刷新了onBindViewHolder："+i);
+        //L.i("刷新了onBindViewHolder："+i);
         num = goodsList.get(i).getNumble();
-        Picasso.get().load(goodsList.get(i).getImgResId()).into(myViewHolder.imageView);
-        myViewHolder.tvName.setText(goodsList.get(i).getName());
-        myViewHolder.tvPrice.setText(String.format(mContext.getResources().getString(R.string.goodPrice),goodsList.get(i).getPrice()));
-        myViewHolder.tvBarcode.setText(goodsList.get(i).getBarCode());
-        myViewHolder.tvGoodsNum.setText(String.valueOf(num));
+        barcode = goodsList.get(i).getBarCode();
+        goodsName = goodsList.get(i).getName();
+        goodsPrice = goodsList.get(i).getPrice();
+        Picasso.get().load(Constant.goodsIconList[goodsList.get(i).getImgResId()]).into(myViewHolder.imageView);
+        myViewHolder.tvName.setText(goodsName);
+        myViewHolder.tvPrice.setText(String.format(mContext.getResources().getString(R.string.goodPrice),goodsPrice));
+        myViewHolder.tvBarcode.setText(barcode);
+        myViewHolder.tvGoodsNum.setText(String.valueOf(num));        //item上数量只显示为1
         myViewHolder.cbSelectGoods.setChecked(goodsList.get(i).getIsChecked());
         myViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {        //item长按事件
             @Override
             public boolean onLongClick(View view) {
                 iitemSelect.onItemLongClickListener(i);
                 return false;
+            }
+        });
+        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {          //item点击事件
+            @Override
+            public void onClick(View v) {
+                iitemSelect.onItemClickListener(i);
             }
         });
         myViewHolder.ibReduce.setOnClickListener(new View.OnClickListener() {
@@ -140,10 +151,12 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.MyViewHolder
     public void notifyData(List<Goods> goodsList){
         this.goodsList = goodsList;
         notifyDataSetChanged();
+        iitemSelect.onGoodsListChanged(goodsList);
     }
 
     public interface IitemSelect{
         void onGoodsListChanged(List<Goods> goodsList);   //商品数据改变的回调
         void onItemLongClickListener(int position);
+        void onItemClickListener(int position);
     }
 }

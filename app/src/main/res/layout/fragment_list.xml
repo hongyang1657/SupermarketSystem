@@ -12,6 +12,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:layout_weight="1"
             android:background="@drawable/edittext_back_shape"
             android:padding="10dp"
             android:drawablePadding="4dp"
@@ -24,9 +25,20 @@
             android:drawableLeft="@mipmap/search"
             android:id="@+id/tv_search_goods"
             android:clickable="true"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:focusable="true" />
+
+        <TextView
+            android:id="@+id/tv_clean"
+            android:textSize="16sp"
+            android:textColor="@color/colorWhite"
+            android:paddingStart="10dp"
+            android:paddingEnd="14dp"
+            android:text="@string/clean"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout

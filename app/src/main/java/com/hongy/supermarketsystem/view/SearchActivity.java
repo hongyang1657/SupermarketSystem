@@ -1,11 +1,13 @@
 package com.hongy.supermarketsystem.view;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -37,7 +39,9 @@ public class SearchActivity extends Activity{
         tvSerach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                // 隐藏软键盘
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
                 Intent intent = new Intent();
                 intent.putExtra("serachContent",etSerach.getText().toString().trim());
                 setResult(RESULT_OK,intent);

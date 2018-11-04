@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/colorAlpha"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/ll_worker_setting"
+        android:gravity="center_vertical"
+        android:background="@drawable/dialog_title_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageButton
+            android:id="@+id/ib_delete"
+            android:src="@mipmap/delete"
+            android:background="@null"
+            android:padding="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="@string/edit"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:padding="16dp"
+            android:textColor="@color/colorBlack"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:id="@+id/ib_close"
+            android:src="@mipmap/close"
+            android:background="@null"
+            android:padding="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/colorWhiteBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_margin="6dp"
+            android:orientation="horizontal"
+            android:padding="6dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="8dp"
+                android:text="@string/goodsBar"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textColor="@color/colorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/et_bar_code"
+                android:background="@drawable/edittext_back_shape"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:inputType="number"
+                android:textSize="14sp"
+                android:textColor="@color/colorBlack"
+                android:gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:ignore="LabelFor" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_margin="6dp"
+            android:orientation="horizontal"
+            android:padding="6dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="8dp"
+                android:text="@string/goodsName"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textColor="@color/colorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/et_goods_name"
+                android:background="@drawable/edittext_back_shape"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:textSize="14sp"
+                android:textColor="@color/colorBlack"
+                android:gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:ignore="LabelFor,TextFields" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_margin="6dp"
+            android:orientation="horizontal"
+            android:padding="6dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="8dp"
+                android:text="@string/goodsPrice"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textColor="@color/colorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/et_goods_price"
+                android:background="@drawable/edittext_back_shape"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:inputType="numberDecimal"
+                android:textSize="14sp"
+                android:textColor="@color/colorBlack"
+                android:gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:ignore="LabelFor" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_margin="6dp"
+            android:orientation="horizontal"
+            android:padding="6dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="8dp"
+                android:text="@string/goodsNum"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textColor="@color/colorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/et_goods_num"
+                android:background="@drawable/edittext_back_shape"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:text="@string/num_1"
+                android:inputType="number"
+                android:textSize="14sp"
+                android:textColor="@color/colorBlack"
+                android:gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:ignore="LabelFor" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:background="@color/colorWhiteBack"
+        android:layout_width="match_parent"
+        android:layout_height="1px" />
+    <LinearLayout
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:text="取消"
+            android:textColor="@color/colorText"
+            android:clickable="true"
+            android:background="@drawable/dialog_cancel"
+            android:textSize="16sp"
+            android:padding="14dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:background="@color/colorWhiteBack"
+            android:layout_width="1px"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/tv_enter"
+            android:text="确定"
+            android:clickable="true"
+            android:background="@drawable/dialog_enter"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:padding="14dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -9,9 +9,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.hongy.supermarketsystem.R;
@@ -19,6 +22,7 @@ import com.hongy.supermarketsystem.bean.Goods;
 import com.hongy.supermarketsystem.fragment.adapter.GoodsAdapter;
 import com.hongy.supermarketsystem.utils.L;
 import com.hongy.supermarketsystem.view.SearchActivity;
+import com.hongy.supermarketsystem.view.dialog.GoodsEditorDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +40,7 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
     private GoodsAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private TextView tvSearch;
+    private TextView tvSearch,tvClean;
 
     @Nullable
     @Override
@@ -57,6 +61,7 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
         recyclerView = view.findViewById(R.id.recycler_view_search_list);
         swipeRefreshLayout = view.findViewById(R.id.list_swipe_layout);
         tvSearch = view.findViewById(R.id.tv_search_goods);
+        tvClean = view.findViewById(R.id.tv_clean);
         adapter = new GoodsAdapter(goodsList,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
@@ -94,6 +99,14 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
                 Intent intent = new Intent(getActivity(), SearchActivity.class);
                 intent.putExtra("content",tvSearch.getText().toString().trim());
                 startActivityForResult(intent,1);
+            }
+        });
+        tvClean.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvSearch.setText("");
+                swipeRefreshLayout.setRefreshing(true);  //开始刷新动画
+                conditionQueryData(tvSearch.getText().toString().trim());
             }
         });
     }
@@ -173,9 +186,18 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
         }
     }
 
+    //Item长按事件
     @Override
     public void onItemLongClickListener(int position) {
         L.i("onItemLongClickListener:"+position);
+    }
+
+    //item点击事件
+    @Override
+    public void onItemClickListener(int position) {
+        GoodsEditorDialog dialog = new GoodsEditorDialog(getActivity(),goodsList.get(position).getBarCode()
+                ,goodsList.get(position).getName(),goodsList.get(position).getPrice(),goodsList.get(position).getNumble(),goodsList.get(position).getObjectId());
+        dialog.show();
     }
 
     @Override
