@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -22,7 +23,6 @@ import com.hongy.supermarketsystem.api.ApiManager;
 import com.hongy.supermarketsystem.bean.Goods;
 import com.hongy.supermarketsystem.bean.GoodsInfoFromInternet;
 import com.hongy.supermarketsystem.utils.Constant;
-import com.hongy.supermarketsystem.utils.DataBaseUtil;
 import com.hongy.supermarketsystem.utils.L;
 import com.hongy.supermarketsystem.zxing.activity.CaptureActivity;
 
@@ -102,7 +102,7 @@ public class EnteringActivity extends Activity{
             Toast.makeText(this, "商品信息不能为空", Toast.LENGTH_SHORT).show();
         }else {
             Goods goods = new Goods(goodsName,goodsPrice,goodsBarcode,new Random().nextInt(21),1,true);     //这里商品数量暂时写死为1，不可变
-            DataBaseUtil.insertData(goods);
+            //DataBaseUtil.insertData(goods);
 
             goods.save(new SaveListener<String>() {
                 @Override

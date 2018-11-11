@@ -1,56 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorCutOffLine2"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/ll_input_barcode"
+        android:id="@+id/ll_search"
         android:orientation="horizontal"
-        android:layout_margin="10dp"
-        android:gravity="center_vertical"
+        android:background="@color/colorRed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="@string/barcode"
-            android:textColor="@color/colorBlack"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/et_input_barcode"
-            android:gravity="center_vertical"
-            android:background="@null"
             android:layout_weight="1"
-            android:inputType="number"
+            android:background="@drawable/edittext_back_shape"
+            android:padding="10dp"
+            android:drawablePadding="4dp"
+            android:textSize="14sp"
+            android:textColor="@color/colorBlack"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:drawableLeft="@mipmap/search"
+            android:id="@+id/tv_search_goods"
+            android:clickable="true"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:ignore="LabelFor" />
-        <Button
-            android:id="@+id/bt_input_barcode"
-            android:text="@string/add"
-            android:focusable="true"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/tv_clean"
+            android:textSize="16sp"
+            android:textColor="@color/colorWhite"
+            android:paddingStart="10dp"
+            android:paddingEnd="14dp"
+            android:text="@string/clean"
+            android:gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/bt_scan"
-        android:layout_below="@id/ll_input_barcode"
-        android:text="@string/scan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <RelativeLayout
         android:id="@+id/rl_total"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:background="@color/colorWhite"
-        android:foreground="@drawable/frame_no_corner"
         android:layout_height="60dp">
         <CheckBox
             android:id="@+id/cb_total"
@@ -105,10 +103,21 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_cashier_list"
-        android:layout_below="@id/bt_scan"
+        android:layout_below="@id/ll_search"
         android:layout_above="@id/rl_total"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/float_action_bt_scan"
+        android:layout_above="@id/rl_total"
+        android:src="@mipmap/scan_1"
+        app:backgroundTint="@color/colorWhite"
+        app:layout_behavior="com.voctex.ui.tablayout.other.ScrollingViewBehavior"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

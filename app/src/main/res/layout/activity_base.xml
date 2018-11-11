@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <RadioGroup
         android:id="@+id/rg_main"
         android:orientation="horizontal"
         android:weightSum="4"
         android:background="@color/colorWhiteBack"
+        android:foreground="@drawable/frame_no_corner"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:layout_weight="1"
-            android:text="@string/enter"
+            android:text="@string/getMoney"
             android:onClick="click"
             android:textSize="14sp"
             android:checked="false"
@@ -85,6 +85,7 @@
         android:layout_above="@id/rg_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </FrameLayout>
+
+
 </RelativeLayout>

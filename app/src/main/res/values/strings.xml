@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">金福超市</string>
     <string name="cashier">收银</string>
+    <string name="getMoney">收款</string>
     <string name="enter">录入</string>
     <string name="list">列表</string>
     <string name="mine">我的</string>
@@ -21,4 +22,5 @@
     <string name="logout">退出登录</string>
     <string name="edit">编辑商品</string>
     <string name="clean">清除</string>
+    <string name="tips">提示</string>
 </resources>

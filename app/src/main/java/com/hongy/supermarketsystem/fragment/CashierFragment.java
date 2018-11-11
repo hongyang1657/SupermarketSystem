@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +33,8 @@ import com.hongy.supermarketsystem.fragment.impl.ICashierFragmentView;
 import com.hongy.supermarketsystem.presenter.BmobQueryPresenter;
 import com.hongy.supermarketsystem.utils.Constant;
 import com.hongy.supermarketsystem.utils.L;
+import com.hongy.supermarketsystem.view.SearchActivity;
+import com.hongy.supermarketsystem.view.dialog.EnterDialog;
 import com.hongy.supermarketsystem.zxing.activity.CaptureActivity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -47,14 +50,15 @@ import static android.app.Activity.RESULT_OK;
 public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelect,ICashierFragmentView{
 
     private RecyclerView recyclerView;
+    private FloatingActionButton floatingActionButton;
     private CheckBox cbTotal;
     private Button btTotal;
-    private TextView tvTotalPrice;
-    private EditText etCodebar;
+    private TextView tvTotalPrice,tvSearch,tvClean;
     private GoodsAdapter adapter;
     private List<Goods> goodsList = new ArrayList<>();
     private boolean ischeck;
     private BmobQueryPresenter bmobQueryPresenter;
+    private ClickListener listener;
 
     @Nullable
     @Override
@@ -67,16 +71,19 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
     }
 
     private void initView(View view){
-        Button btScan = view.findViewById(R.id.bt_scan);
+        listener = new ClickListener();
         recyclerView = view.findViewById(R.id.recycler_view_cashier_list);
+        tvSearch = view.findViewById(R.id.tv_search_goods);
+        tvClean = view.findViewById(R.id.tv_clean);
+        floatingActionButton = view.findViewById(R.id.float_action_bt_scan);
         cbTotal = view.findViewById(R.id.cb_total);
         btTotal = view.findViewById(R.id.bt_settle_accounts);
         tvTotalPrice = view.findViewById(R.id.tv_total);
-        etCodebar = view.findViewById(R.id.et_input_barcode);
-        Button btAddBarcode = view.findViewById(R.id.bt_input_barcode);
         adapter = new GoodsAdapter(goodsList,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
+        tvSearch.setOnClickListener(listener);
+        tvClean.setOnClickListener(listener);
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -95,36 +102,44 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
                 }
             }
         });
-        btScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startQrCode();    //开始扫描
-            }
-        });
         cbTotal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 ischeck = isChecked;
             }
         });
-        cbTotal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //全选 更新goodsList
-                for (int i=0;i<goodsList.size();i++){
-                    goodsList.get(i).setIsChecked(ischeck);
-                }
-                adapter.notifyData(goodsList);
+        cbTotal.setOnClickListener(listener);
+        floatingActionButton.setOnClickListener(listener);
+    }
+
+    public class ClickListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.tv_search_goods:
+                    Intent intent = new Intent(getActivity(), SearchActivity.class);
+                    intent.putExtra("content",tvSearch.getText().toString().trim());
+                    startActivityForResult(intent,1);
+                    break;
+                case R.id.tv_clean:
+                    tvSearch.setText("");
+                    break;
+                case R.id.cb_total:
+                    //全选 更新goodsList
+                    for (int i=0;i<goodsList.size();i++){
+                        goodsList.get(i).setIsChecked(ischeck);
+                    }
+                    adapter.notifyData(goodsList);
+                    break;
+                case R.id.float_action_bt_scan:
+                    startQrCode();    //开始扫描
+                    break;
+                case R.id.bt_settle_accounts:
+
+                    break;
             }
-        });
-        btAddBarcode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //手动输入条形码并添加
-                searchGoods(etCodebar.getText().toString().trim());
-                etCodebar.setText("");
-            }
-        });
+        }
     }
 
     // 开始扫码
@@ -142,14 +157,18 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //扫描结果回调
-        if (requestCode == Constant.REQ_QR_CODE && resultCode == RESULT_OK) {
+        if (requestCode == Constant.REQ_QR_CODE && resultCode == RESULT_OK) {  //扫描结果回调
             Bundle bundle = data.getExtras();
             String scanResult = bundle.getString(Constant.INTENT_EXTRA_KEY_QR_SCAN);
             //查询数据库中有没有此商品
             L.i("条码："+scanResult);
             searchGoods(scanResult);
-            etCodebar.setText(scanResult);
+            tvSearch.setText(scanResult);
+        }else if (requestCode==1 && resultCode==RESULT_OK){  //搜索结果回调
+            String serachContent = data.getExtras().getString("serachContent");
+            L.i("serachContent:"+serachContent);
+            searchGoods(serachContent);
+            tvSearch.setText(serachContent);
         }
     }
 
@@ -216,22 +235,28 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
                 isAllChecked = false;
             }
         }
-        L.i("12222222222222222222222211");
         Message message = new Message();
         message.what = 1;
         message.obj = sum.toString();
         message.arg1 = goodsTotalNum;
-
         handler.sendMessage(message);
 
     }
 
+    private EnterDialog dialog = null;
     @Override
-    public void onItemLongClickListener(int position) {
+    public void onItemLongClickListener(final int position) {
         L.i("onItemLongClickListener:"+position);
-        //删除该条item
-        goodsList.remove(position);
-        adapter.notifyData(goodsList);
+        dialog = new EnterDialog(getActivity(), new EnterDialog.EnterListener() {
+            @Override
+            public void onEnter() {
+                //删除该条item
+                goodsList.remove(position);
+                adapter.notifyData(goodsList);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     @Override

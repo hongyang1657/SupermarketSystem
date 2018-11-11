@@ -9,11 +9,9 @@ import android.view.View;
 
 import com.hongy.supermarketsystem.R;
 import com.hongy.supermarketsystem.fragment.CashierFragment;
-import com.hongy.supermarketsystem.fragment.EnteringFragment;
+import com.hongy.supermarketsystem.fragment.GatheringFragment;
 import com.hongy.supermarketsystem.fragment.ListFragment;
 import com.hongy.supermarketsystem.fragment.MineFragment;
-
-import cn.bmob.v3.Bmob;
 
 
 public class MainActivity extends Activity {
@@ -21,7 +19,7 @@ public class MainActivity extends Activity {
     private FragmentManager fm;
     private FragmentTransaction transaction;
     private CashierFragment cashierFragment;
-    private EnteringFragment enteringFragment;
+    private GatheringFragment gatheringFragment;
     private ListFragment listFragment;
     private MineFragment mineFragment;
 
@@ -37,15 +35,15 @@ public class MainActivity extends Activity {
         fm = getFragmentManager();
         transaction = fm.beginTransaction();
         cashierFragment = new CashierFragment();
-        enteringFragment = new EnteringFragment();
+        gatheringFragment = new GatheringFragment();
         listFragment = new ListFragment();
         mineFragment = new MineFragment();
         transaction.replace(R.id.fl_blank, cashierFragment);
-        transaction.add(R.id.fl_blank,enteringFragment);
+        transaction.add(R.id.fl_blank, gatheringFragment);
         transaction.add(R.id.fl_blank,listFragment);
         transaction.add(R.id.fl_blank,mineFragment);
         transaction.show(cashierFragment);
-        transaction.hide(enteringFragment);
+        transaction.hide(gatheringFragment);
         transaction.hide(listFragment);
         transaction.hide(mineFragment);
         transaction.commit();
@@ -57,13 +55,13 @@ public class MainActivity extends Activity {
             case R.id.rb_scan:
 
                 transaction.show(cashierFragment);
-                transaction.hide(enteringFragment);
+                transaction.hide(gatheringFragment);
                 transaction.hide(listFragment);
                 transaction.hide(mineFragment);
                 transaction.commit();
                 break;
             case R.id.rb_entering:
-                transaction.show(enteringFragment);
+                transaction.show(gatheringFragment);
                 transaction.hide(cashierFragment);
                 transaction.hide(listFragment);
                 transaction.hide(mineFragment);
@@ -71,14 +69,14 @@ public class MainActivity extends Activity {
                 break;
             case R.id.rb_list:
                 transaction.show(listFragment);
-                transaction.hide(enteringFragment);
+                transaction.hide(gatheringFragment);
                 transaction.hide(cashierFragment);
                 transaction.hide(mineFragment);
                 transaction.commit();
                 break;
             case R.id.rb_mine:
                 transaction.show(mineFragment);
-                transaction.hide(enteringFragment);
+                transaction.hide(gatheringFragment);
                 transaction.hide(listFragment);
                 transaction.hide(cashierFragment);
                 transaction.commit();
