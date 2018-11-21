@@ -23,4 +23,5 @@
     <string name="edit">编辑商品</string>
     <string name="clean">清除</string>
     <string name="tips">提示</string>
+    <string name="addGoods">手动输入条码添加商品</string>
 </resources>

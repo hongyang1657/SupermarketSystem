@@ -2,6 +2,8 @@ package com.hongy.supermarketsystem.fragment;
 
 
 import android.Manifest;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
@@ -26,6 +28,8 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 import com.hongy.supermarketsystem.R;
 import com.hongy.supermarketsystem.bean.Goods;
 import com.hongy.supermarketsystem.fragment.adapter.GoodsAdapter;
@@ -34,6 +38,7 @@ import com.hongy.supermarketsystem.presenter.BmobQueryPresenter;
 import com.hongy.supermarketsystem.utils.Constant;
 import com.hongy.supermarketsystem.utils.L;
 import com.hongy.supermarketsystem.view.SearchActivity;
+import com.hongy.supermarketsystem.view.SettlementActivity;
 import com.hongy.supermarketsystem.view.dialog.EnterDialog;
 import com.hongy.supermarketsystem.zxing.activity.CaptureActivity;
 import java.math.BigDecimal;
@@ -41,9 +46,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -53,12 +55,15 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
     private FloatingActionButton floatingActionButton;
     private CheckBox cbTotal;
     private Button btTotal;
-    private TextView tvTotalPrice,tvSearch,tvClean;
+    private TextView tvTotalPrice,tvSearch,tvClean,tvHint;
     private GoodsAdapter adapter;
     private List<Goods> goodsList = new ArrayList<>();
     private boolean ischeck;
     private BmobQueryPresenter bmobQueryPresenter;
     private ClickListener listener;
+    private AnimatorSet mHideFAB;
+    private AnimatorSet mShowFAB;
+    private String totalPrice = "0";
 
     @Nullable
     @Override
@@ -66,6 +71,7 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
         getActivity().getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         View view = inflater.inflate(R.layout.fragment_cashier, container, false);
         initView(view);
+        initAnimation();
         bmobQueryPresenter = new BmobQueryPresenter(this);
         return view;
     }
@@ -75,6 +81,7 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
         recyclerView = view.findViewById(R.id.recycler_view_cashier_list);
         tvSearch = view.findViewById(R.id.tv_search_goods);
         tvClean = view.findViewById(R.id.tv_clean);
+        tvHint = view.findViewById(R.id.tv_hint);
         floatingActionButton = view.findViewById(R.id.float_action_bt_scan);
         cbTotal = view.findViewById(R.id.cb_total);
         btTotal = view.findViewById(R.id.bt_settle_accounts);
@@ -84,10 +91,16 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
         recyclerView.setAdapter(adapter);
         tvSearch.setOnClickListener(listener);
         tvClean.setOnClickListener(listener);
+        btTotal.setOnClickListener(listener);
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                if (newState==0){     //滚动停止
+                    mShowFAB.start();
+                }else if (newState==1){    //手指触摸滚动
+                    mHideFAB.start();
+                }
             }
 
             @Override
@@ -96,9 +109,15 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
                 //L.i("onScrolled:  dx:"+dx+"   dy:"+dy);
                 if(!recyclerView.canScrollVertically(1)){
                     L.i("滑动到底部");//滑动到底部
+                    if (goodsList.size()==0){
+                        tvHint.setVisibility(View.VISIBLE);
+                    }else {
+                        tvHint.setVisibility(View.GONE);
+                    }
                 }
                 if(!recyclerView.canScrollVertically(-1)){
                     L.i( "滑动到顶部");//滑动到顶部
+
                 }
             }
         });
@@ -110,6 +129,14 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
         });
         cbTotal.setOnClickListener(listener);
         floatingActionButton.setOnClickListener(listener);
+
+    }
+
+    private void initAnimation(){
+        mHideFAB = (AnimatorSet)AnimatorInflater.loadAnimator(getActivity(),R.animator.scroll_hide_fab);
+        mShowFAB = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(),R.animator.scroll_show_fab);
+        mHideFAB.setTarget(floatingActionButton);
+        mShowFAB.setTarget(floatingActionButton);
     }
 
     public class ClickListener implements View.OnClickListener{
@@ -119,11 +146,14 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
             switch (v.getId()){
                 case R.id.tv_search_goods:
                     Intent intent = new Intent(getActivity(), SearchActivity.class);
-                    intent.putExtra("content",tvSearch.getText().toString().trim());
+                    intent.putExtra("content","");
+                    intent.putExtra("tips","输入条形码查找商品");
                     startActivityForResult(intent,1);
                     break;
                 case R.id.tv_clean:
                     tvSearch.setText("");
+                    goodsList = new ArrayList<>();
+                    adapter.notifyData(goodsList);
                     break;
                 case R.id.cb_total:
                     //全选 更新goodsList
@@ -136,7 +166,10 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
                     startQrCode();    //开始扫描
                     break;
                 case R.id.bt_settle_accounts:
-
+                    Intent intent1 = new Intent(getActivity(), SettlementActivity.class);
+                    intent1.putExtra("totalPrice",totalPrice);
+                    intent1.putExtra("goodsList",new Gson().toJson(goodsList));
+                    startActivity(intent1);
                     break;
             }
         }
@@ -209,6 +242,7 @@ public class CashierFragment extends Fragment implements GoodsAdapter.IitemSelec
             switch (msg.what){
                 case 1:
                     tvTotalPrice.setText("¥"+msg.obj);
+                    totalPrice = (String) msg.obj;
                     cbTotal.setText("  全选("+msg.arg1+")");
                     cbTotal.setChecked(isAllChecked);
                     break;

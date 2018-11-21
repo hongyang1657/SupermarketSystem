@@ -9,12 +9,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.hongy.supermarketsystem.R;
@@ -26,7 +23,6 @@ import com.hongy.supermarketsystem.view.dialog.GoodsEditorDialog;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
@@ -40,7 +36,7 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
     private GoodsAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private TextView tvSearch,tvClean;
+    private TextView tvSearch,tvClean,tvHint;
 
     @Nullable
     @Override
@@ -62,6 +58,7 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
         swipeRefreshLayout = view.findViewById(R.id.list_swipe_layout);
         tvSearch = view.findViewById(R.id.tv_search_goods);
         tvClean = view.findViewById(R.id.tv_clean);
+        tvHint = view.findViewById(R.id.tv_hint);
         adapter = new GoodsAdapter(goodsList,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
@@ -82,6 +79,11 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
                 }
                 if(!recyclerView.canScrollVertically(-1)){
                     L.i( "滑动到顶部");//滑动到顶部
+                    if (goodsList.size()==0){
+                        tvHint.setVisibility(View.VISIBLE);
+                    }else {
+                        tvHint.setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -98,6 +100,7 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
                 //跳转搜索页面
                 Intent intent = new Intent(getActivity(), SearchActivity.class);
                 intent.putExtra("content",tvSearch.getText().toString().trim());
+                intent.putExtra("tips","目前只能通过价格查找商品");
                 startActivityForResult(intent,1);
             }
         });

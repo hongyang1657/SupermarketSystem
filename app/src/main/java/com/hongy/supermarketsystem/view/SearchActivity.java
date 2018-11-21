@@ -14,12 +14,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.hongy.supermarketsystem.R;
+import com.hongy.supermarketsystem.utils.L;
 
 
 public class SearchActivity extends Activity{
 
     private EditText etSerach;
-    private TextView tvSerach;
+    private TextView tvSerach,tvTips;
     private String content = "";
 
     @Override
@@ -33,6 +34,9 @@ public class SearchActivity extends Activity{
         content = getIntent().getStringExtra("content");
         etSerach = findViewById(R.id.et_search);
         tvSerach = findViewById(R.id.tv_bt_search);
+        tvTips = findViewById(R.id.tv_tips);
+        L.i("11111111111"+getIntent().getStringExtra("tips")+"ssssssssss:"+content);
+        tvTips.setText(getIntent().getStringExtra("tips"));
         etSerach.setFocusable(true);
         etSerach.setFocusableInTouchMode(true);
         etSerach.requestFocus();

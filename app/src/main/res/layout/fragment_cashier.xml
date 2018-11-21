@@ -19,7 +19,8 @@
             android:padding="10dp"
             android:drawablePadding="4dp"
             android:textSize="14sp"
-            android:textColor="@color/colorBlack"
+            android:text="@string/addGoods"
+            android:textColor="@color/colorText"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="4dp"
@@ -110,14 +111,29 @@
 
     </android.support.v7.widget.RecyclerView>
 
+    <TextView
+        android:id="@+id/tv_hint"
+        android:gravity="center"
+        android:text="扫码添加商品"
+        android:textSize="20sp"
+        android:clickable="true"
+        android:layout_below="@id/ll_search"
+        android:layout_above="@id/rl_total"
+        android:textColor="@color/colorText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/float_action_bt_scan"
         android:layout_above="@id/rl_total"
         android:src="@mipmap/scan_1"
         app:backgroundTint="@color/colorWhite"
+        app:rippleColor="@color/colorBlueShade"
         app:layout_behavior="com.voctex.ui.tablayout.other.ScrollingViewBehavior"
         android:layout_alignParentEnd="true"
         android:layout_margin="30dp"
+        app:fabSize="normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </RelativeLayout>

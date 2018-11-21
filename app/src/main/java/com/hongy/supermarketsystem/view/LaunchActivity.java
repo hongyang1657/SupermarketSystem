@@ -46,7 +46,7 @@ public class LaunchActivity extends Activity{
                 }
                 finish();
             }
-        },3000);
+        },2000);
 
     }
 }

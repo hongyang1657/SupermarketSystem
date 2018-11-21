@@ -38,7 +38,7 @@
         <activity android:name=".zxing.activity.CaptureActivity"/>
         <activity android:name=".view.SearchActivity"/>
         <activity android:name=".view.EnteringActivity"/>
-
+        <activity android:name=".view.SettlementActivity"/>
     </application>
 
 </manifest>

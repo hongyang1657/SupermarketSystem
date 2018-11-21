@@ -88,8 +88,8 @@ public class CaptureActivity extends Activity implements Callback {
             }
         });*/
 
-        //btnFlash = (ImageButton) findViewById(R.id.btn_flash);
-        //btnFlash.setOnClickListener(flashListener);
+        btnFlash = (ImageButton) findViewById(R.id.btn_flash);
+        btnFlash.setOnClickListener(flashListener);
 
         /*btnAlbum.setOnClickListener(albumOnClick);*/
 
@@ -361,27 +361,27 @@ public class CaptureActivity extends Activity implements Callback {
     /**
      *  闪光灯开关按钮
      */
-//    private View.OnClickListener flashListener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View view) {
-//            try {
-//                boolean isSuccess = CameraManager.get().setFlashLight(!isFlashOn);
-//                if(!isSuccess){
-//                    Toast.makeText(CaptureActivity.this, "暂时无法开启闪光灯", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                if (isFlashOn) {
-//                    // 关闭闪光灯
-//                    //btnFlash.setImageResource(R.drawable.flash_off);
-//                    isFlashOn = false;
-//                } else {
-//                    // 开启闪光灯
-//                    //btnFlash.setImageResource(R.drawable.flash_on);
-//                    isFlashOn = true;
-//                }
-//            }catch (Exception e){
-//                e.printStackTrace();
-//            }
-//        }
-//    };
+    private View.OnClickListener flashListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            try {
+                boolean isSuccess = CameraManager.get().setFlashLight(!isFlashOn);
+                if(!isSuccess){
+                    Toast.makeText(CaptureActivity.this, "暂时无法开启闪光灯", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (isFlashOn) {
+                    // 关闭闪光灯
+                    btnFlash.setImageResource(R.mipmap.flash_off);
+                    isFlashOn = false;
+                } else {
+                    // 开启闪光灯
+                    btnFlash.setImageResource(R.mipmap.flash_on);
+                    isFlashOn = true;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    };
 }

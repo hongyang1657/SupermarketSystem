@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="@color/colorCutOffLine2"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/ll_1"
         android:orientation="horizontal"
         android:background="@color/colorRed"
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
-            android:drawableLeft="@mipmap/search"
+            android:drawableStart="@mipmap/search"
             android:id="@+id/tv_search_goods"
             android:clickable="true"
             android:layout_width="0dp"
@@ -43,15 +44,27 @@
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/list_swipe_layout"
+        android:layout_below="@id/ll_1"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_search_list"
             android:scrollbars="vertical"
+            android:fadeScrollbars="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+
     </android.support.v4.widget.SwipeRefreshLayout>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_hint"
+        android:gravity="center"
+        android:text="没有找到该商品"
+        android:textSize="20sp"
+        android:layout_below="@id/ll_1"
+        android:textColor="@color/colorText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>
