@@ -26,6 +26,8 @@
             android:id="@+id/et_username"
             android:background="@drawable/edittext_back_shape"
             android:hint="@string/username"
+            android:textColorHint="@color/colorRbNotSelected"
+            android:textColor="@color/colorBlack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <EditText
@@ -33,6 +35,8 @@
             android:layout_margin="10dp"
             android:id="@+id/et_password"
             android:inputType="textPassword"
+            android:textColor="@color/colorBlack"
+            android:textColorHint="@color/colorRbNotSelected"
             android:background="@drawable/edittext_back_shape"
             android:hint="@string/password"
             android:layout_width="match_parent"

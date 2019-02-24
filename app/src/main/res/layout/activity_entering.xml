@@ -13,47 +13,47 @@
         android:textSize="18sp"
         android:background="@color/colorWhite"
         android:textColor="@color/colorBlack"
-        android:text="@string/mine"
+        android:text="@string/enter"
         android:layout_marginBottom="1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <LinearLayout
         android:layout_margin="10dp"
         android:orientation="horizontal"
-        android:padding="4dp"
+        android:padding="2dp"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:padding="8dp"
+            android:padding="4dp"
             android:text="@string/searchCodebarOnline"
-            android:gravity="center"
-            android:textSize="14sp"
+            android:gravity="center_vertical"
+            android:textSize="16sp"
             android:textColor="@color/colorBlack"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <Switch
             android:id="@+id/sw"
             android:textOn=""
             android:textOff=""
+            android:padding="4dp"
             android:thumb="@drawable/thumb"
             android:track="@drawable/track"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
-    <Button
-        android:id="@+id/bt_scan"
-        android:text="@string/scan"
-        android:layout_margin="10dp"
+    <TextView
+        android:background="@color/colorCutOffLine2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="1px" />
 
     <LinearLayout
         android:layout_margin="10dp"
         android:orientation="horizontal"
-        android:padding="4dp"
+        android:padding="2dp"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -62,15 +62,15 @@
             android:padding="8dp"
             android:text="@string/goodsBar"
             android:gravity="center"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/colorBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/et_bar_code"
-            android:background="@null"
             android:layout_weight="1"
             android:padding="8dp"
+            android:background="@drawable/edittext_back_shape"
             android:inputType="number"
             android:textSize="14sp"
             android:textColor="@color/colorBlack"
@@ -78,11 +78,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:ignore="LabelFor" />
+
+        <ImageView
+            android:id="@+id/bt_scan"
+            android:clickable="true"
+            android:src="@mipmap/camera"
+            android:paddingEnd="4dp"
+            android:paddingStart="8dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="true" />
     </LinearLayout>
+    <TextView
+        android:background="@color/colorCutOffLine2"
+        android:layout_width="match_parent"
+        android:layout_height="1px" />
     <LinearLayout
         android:layout_margin="10dp"
         android:orientation="horizontal"
-        android:padding="4dp"
+        android:padding="2dp"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -91,13 +107,13 @@
             android:padding="8dp"
             android:text="@string/goodsName"
             android:gravity="center"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/colorBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/et_goods_name"
-            android:background="@null"
+            android:background="@drawable/edittext_back_shape"
             android:layout_weight="1"
             android:padding="8dp"
             android:textSize="14sp"
@@ -107,11 +123,14 @@
             android:layout_height="wrap_content"
             tools:ignore="LabelFor,TextFields" />
     </LinearLayout>
-
+    <TextView
+        android:background="@color/colorCutOffLine2"
+        android:layout_width="match_parent"
+        android:layout_height="1px" />
     <LinearLayout
         android:layout_margin="10dp"
         android:orientation="horizontal"
-        android:padding="4dp"
+        android:padding="2dp"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -120,13 +139,13 @@
             android:padding="8dp"
             android:text="@string/goodsPrice"
             android:gravity="center"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/colorBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/et_goods_price"
-            android:background="@null"
+            android:background="@drawable/edittext_back_shape"
             android:layout_weight="1"
             android:padding="8dp"
             android:inputType="numberDecimal"
@@ -137,11 +156,14 @@
             android:layout_height="wrap_content"
             tools:ignore="LabelFor" />
     </LinearLayout>
-
+    <TextView
+        android:background="@color/colorCutOffLine2"
+        android:layout_width="match_parent"
+        android:layout_height="1px" />
     <LinearLayout
         android:layout_margin="10dp"
         android:orientation="horizontal"
-        android:padding="4dp"
+        android:padding="2dp"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -150,13 +172,13 @@
             android:padding="8dp"
             android:text="@string/goodsNum"
             android:gravity="center"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/colorBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/et_goods_num"
-            android:background="@null"
+            android:background="@drawable/edittext_back_shape"
             android:layout_weight="1"
             android:padding="8dp"
             android:text="@string/num_1"
@@ -168,11 +190,20 @@
             android:layout_height="wrap_content"
             tools:ignore="LabelFor" />
     </LinearLayout>
-
+    <TextView
+        android:background="@color/colorCutOffLine2"
+        android:layout_width="match_parent"
+        android:layout_height="1px" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
     <Button
-        android:layout_margin="10dp"
+        android:padding="6dp"
         android:id="@+id/bt_add_goods"
+        android:background="@color/colorTuomanRed"
         android:text="@string/add"
+        android:textColor="@color/colorWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

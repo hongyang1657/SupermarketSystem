@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,14 +48,14 @@ public class EnteringActivity extends Activity{
 
 
     private void initView(){
-        Button btScan = findViewById(R.id.bt_scan);
+        ImageView ivScan = findViewById(R.id.bt_scan);
         Button btAddGoods = findViewById(R.id.bt_add_goods);
         etBarCode = findViewById(R.id.et_bar_code);
         etGoodsName = findViewById(R.id.et_goods_name);
         etGoodsPrice = findViewById(R.id.et_goods_price);
         etGoodsNum = findViewById(R.id.et_goods_num);
         Switch aSwitch = findViewById(R.id.sw);
-        btScan.setOnClickListener(new View.OnClickListener() {
+        ivScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startQrCode();
