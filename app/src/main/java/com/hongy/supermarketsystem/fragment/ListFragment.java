@@ -2,6 +2,7 @@ package com.hongy.supermarketsystem.fragment;
 
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -37,6 +38,7 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private TextView tvSearch,tvClean,tvHint;
+    private GoodsEditorDialog dialog;
 
     @Nullable
     @Override
@@ -44,6 +46,14 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         initView(view);
         conditionQueryData(tvSearch.getText().toString().trim());
+        dialog = new GoodsEditorDialog(getActivity());
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                //详情页dialog退出，此时刷新list
+                conditionQueryData(tvSearch.getText().toString().trim());
+            }
+        });
         return view;
     }
 
@@ -198,8 +208,10 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
     //item点击事件
     @Override
     public void onItemClickListener(int position) {
-        GoodsEditorDialog dialog = new GoodsEditorDialog(getActivity(),goodsList.get(position).getBarCode()
-                ,goodsList.get(position).getName(),goodsList.get(position).getPrice(),goodsList.get(position).getNumble(),goodsList.get(position).getObjectId());
+        //弹出商品详情dialog
+        L.i("position:"+position);
+        dialog.setGoods(goodsList.get(position).getBarCode(),goodsList.get(position).getName()
+                ,goodsList.get(position).getPrice(),goodsList.get(position).getNumble(),goodsList.get(position).getObjectId());
         dialog.show();
     }
 

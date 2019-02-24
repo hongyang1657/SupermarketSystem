@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">金福超市</string>
+    <string name="app_name">超市收银系统</string>
     <string name="cashier">收银</string>
     <string name="getMoney">收款</string>
     <string name="enter">录入</string>
@@ -24,4 +24,6 @@
     <string name="clean">清除</string>
     <string name="tips">提示</string>
     <string name="addGoods">手动输入条码添加商品</string>
+    <string name="wechatPay">微信支付</string>
+    <string name="aliPay">支付宝</string>
 </resources>

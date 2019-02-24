@@ -203,6 +203,7 @@
         android:id="@+id/bt_add_goods"
         android:background="@color/colorTuomanRed"
         android:text="@string/add"
+        android:textSize="15dp"
         android:textColor="@color/colorWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

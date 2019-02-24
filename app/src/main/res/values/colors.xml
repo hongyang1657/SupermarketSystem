@@ -37,4 +37,6 @@
     <color name="colorRbSelected">#1296db</color>
     <color name="colorRbNotSelected">#8a8a8a</color>
     <color name="colorRed">#d81e06</color>
+    <color name="alipayBlue">#108ee9</color>
+    <color name="wechatGreen">#2F9833</color>
 </resources>

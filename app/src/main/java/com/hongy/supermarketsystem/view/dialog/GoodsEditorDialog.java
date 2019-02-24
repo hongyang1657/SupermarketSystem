@@ -2,8 +2,10 @@ package com.hongy.supermarketsystem.view.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,9 +32,12 @@ public class GoodsEditorDialog extends Dialog{
     private String barcode,goodsName,goodsPrice,objectId;
     private int goodsNum;
 
-    public GoodsEditorDialog(@NonNull Context context,String barcode,String goodsName,String goodsPrice,int goodsNum,String objectId) {
+    public GoodsEditorDialog(@NonNull Context context) {
         super(context);
         this.mContext = context;
+    }
+
+    public void setGoods(String barcode,String goodsName,String goodsPrice,int goodsNum,String objectId){
         this.barcode = barcode;
         this.goodsName = goodsName;
         this.goodsPrice = goodsPrice;
@@ -44,6 +49,16 @@ public class GoodsEditorDialog extends Dialog{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //每次刷新data
+        etBarCode.setText(barcode);
+        etGoodsName.setText(goodsName);
+        etPrice.setText(goodsPrice);
+        etNum.setText(String.valueOf(goodsNum));
     }
 
     private void initView(){
@@ -62,10 +77,6 @@ public class GoodsEditorDialog extends Dialog{
         ibClose.setOnClickListener(new ClickListener());
         tvCancel.setOnClickListener(new ClickListener());
         tvEnter.setOnClickListener(new ClickListener());
-        etBarCode.setText(barcode);
-        etGoodsName.setText(goodsName);
-        etPrice.setText(goodsPrice);
-        etNum.setText(String.valueOf(goodsNum));
 
         Window dialogWindow = getWindow();
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
@@ -73,6 +84,11 @@ public class GoodsEditorDialog extends Dialog{
         lp.width = (int) (d.widthPixels * 0.8); // 宽度设置为屏幕的0.8
         dialogWindow.setAttributes(lp);
         setCanceledOnTouchOutside(false);   //点击外部，不关闭dialog
+    }
+
+    @Override
+    public void setOnDismissListener(@Nullable OnDismissListener listener) {
+        super.setOnDismissListener(listener);
     }
 
     public class ClickListener implements View.OnClickListener {

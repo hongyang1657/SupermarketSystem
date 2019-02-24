@@ -43,6 +43,7 @@
         android:layout_toStartOf="@id/tv_goods_barcode"
         android:layout_toEndOf="@id/iv_goods"
         android:text=""
+        android:lines="3"
         android:textSize="14sp"
         android:textColor="@color/colorBlack"
         android:padding="10dp"

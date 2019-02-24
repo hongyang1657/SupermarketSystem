@@ -1,7 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:weightSum="2"
+    android:gravity="center"
+    android:background="@color/colorWhiteBack"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/alipay_shape"
+        android:orientation="vertical"
+        android:layout_width="300dp"
+        android:layout_height="0dp">
+
+        <TextView
+            android:text="@string/aliPay"
+            android:gravity="center"
+            android:padding="6dp"
+            android:textSize="16sp"
+            android:textColor="@color/colorWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:src="@mipmap/alipay"
+            android:layout_width="220dp"
+            android:layout_height="220dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/wechat_shape"
+        android:orientation="vertical"
+        android:layout_width="300dp"
+        android:layout_height="0dp">
+
+        <TextView
+            android:text="@string/wechatPay"
+            android:gravity="center"
+            android:padding="6dp"
+            android:textSize="16sp"
+            android:textColor="@color/colorWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:src="@mipmap/wechatpay"
+            android:layout_width="220dp"
+            android:layout_height="220dp" />
+    </LinearLayout>
 </LinearLayout>
