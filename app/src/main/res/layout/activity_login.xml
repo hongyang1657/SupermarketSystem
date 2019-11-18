@@ -1,55 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="@color/colorWhiteBack"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:binding="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:text="@string/login"
-        android:padding="10dp"
-        android:textColor="@color/colorBlack"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <data>
+        <variable
+            name="viewModel"
+            type="com.hongy.supermarketsystem.viewModel.LoginViewModel" />
+    </data>
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_marginTop="30dp"
+        android:background="@color/colorWhiteBack"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:padding="10dp"
-            android:layout_margin="10dp"
-            android:id="@+id/et_username"
-            android:background="@drawable/edittext_back_shape"
-            android:hint="@string/username"
-            android:textColorHint="@color/colorRbNotSelected"
-            android:textColor="@color/colorBlack"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:padding="10dp"
-            android:layout_margin="10dp"
-            android:id="@+id/et_password"
-            android:inputType="textPassword"
-            android:textColor="@color/colorBlack"
-            android:textColorHint="@color/colorRbNotSelected"
-            android:background="@drawable/edittext_back_shape"
-            android:hint="@string/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/bt_login"
-            android:textSize="14sp"
+        <TextView
             android:text="@string/login"
-            android:textColor="@color/colorWhite"
-            android:layout_margin="10dp"
-            android:padding="12dp"
-            android:background="@drawable/button_shape"
+            android:padding="10dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:padding="10dp"
+                android:text="@={viewModel.username}"
+                android:layout_margin="10dp"
+                android:id="@+id/et_username"
+                android:background="@drawable/edittext_back_shape"
+                android:hint="@string/username"
+                android:textColorHint="@color/colorRbNotSelected"
+                android:textColor="@color/colorBlack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:padding="10dp"
+                android:text="@={viewModel.password}"
+                android:layout_margin="10dp"
+                android:id="@+id/et_password"
+                android:inputType="textPassword"
+                android:textColor="@color/colorBlack"
+                android:textColorHint="@color/colorRbNotSelected"
+                android:background="@drawable/edittext_back_shape"
+                android:hint="@string/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/bt_login"
+                android:textSize="14sp"
+                binding:onClickCommand="@{viewModel.loginOnClickCommand}"
+                android:text="@string/login"
+                android:textColor="@color/colorWhite"
+                android:layout_margin="10dp"
+                android:padding="12dp"
+                android:background="@drawable/button_shape"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</layout>

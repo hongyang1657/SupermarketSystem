@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.hongy.supermarketsystem.R;
 import com.hongy.supermarketsystem.bean.Goods;
 import com.hongy.supermarketsystem.fragment.adapter.GoodsAdapter;
+import com.hongy.supermarketsystem.utils.DataBaseUtil;
 import com.hongy.supermarketsystem.utils.L;
 import com.hongy.supermarketsystem.view.SearchActivity;
 import com.hongy.supermarketsystem.view.dialog.GoodsEditorDialog;
@@ -54,6 +55,8 @@ public class ListFragment extends Fragment implements GoodsAdapter.IitemSelect{
                 conditionQueryData(tvSearch.getText().toString().trim());
             }
         });
+
+        L.i("数据库:"+ DataBaseUtil.queryAll());
         return view;
     }
 
